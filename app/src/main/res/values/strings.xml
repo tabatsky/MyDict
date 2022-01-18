@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyDict</string>
+    <string name="btn_english">Английский</string>
+    <string name="btn_deutsch">Немецкий</string>
+    <string name="btn_japanese">Японский</string>
+    <string name="btn_add_word">Добавить слово</string>
+    <string name="hint_word">Слово:</string>
+    <string name="hint_comment">Комментарий:</string>
+    <string name="hint_translation">Перевод:</string>
+    <string name="title_add_word">Добавить слово</string>
+</resources>
