@@ -117,7 +117,11 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val inFile = File(Environment.getExternalStorageDirectory(), "MyDict.json")
+                    val inFile = File(
+                        Environment
+                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+                        "MyDict.json"
+                    )
                     val sc = Scanner(inFile)
                     val backupDataStr = sc.nextLine()
                     sc.close()
@@ -128,6 +132,7 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
                         showToast(getString(R.string.toast_load_data_success))
                     }
                 } catch (e: Exception) {
+                    e.printStackTrace()
                     withContext(Dispatchers.Main) {
                         showToast(getString(R.string.toast_some_error))
                     }
@@ -144,7 +149,10 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
                 val backupDataStr = Gson().toJson(backupData)
                 Log.e("backup", backupDataStr)
                 try {
-                    val outFile = File(Environment.getExternalStorageDirectory(), "MyDict.json")
+                    val dir = Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                    dir.mkdirs()
+                    val outFile = File(dir, "MyDict.json")
                     val pw = PrintWriter(outFile)
                     pw.println(backupDataStr)
                     pw.flush()
@@ -153,6 +161,7 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
                         showToast(getString(R.string.toast_save_data_success))
                     }
                 } catch (e: Exception) {
+                    e.printStackTrace()
                     withContext(Dispatchers.Main) {
                         showToast(getString(R.string.toast_some_error))
                     }
