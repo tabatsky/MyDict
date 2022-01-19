@@ -5,7 +5,7 @@
     android:padding="8dp">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <View
             android:layout_width="match_parent"
@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:orientation="horizontal">
             <View
                 android:layout_width="2dp"
@@ -25,7 +25,7 @@
                 android:id="@+id/tv_original"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="36dp"
+                android:layout_height="match_parent"
                 android:gravity="start|center_vertical"
                 android:paddingStart="4dp"
                 android:background="@color/yellow"
@@ -41,7 +41,7 @@
                 android:id="@+id/tv_translation"
                 android:layout_width="0dp"
                 android:layout_weight="2"
-                android:layout_height="36dp"
+                android:layout_height="match_parent"
                 android:gravity="start|center_vertical"
                 android:paddingStart="4dp"
                 android:background="@color/blue"

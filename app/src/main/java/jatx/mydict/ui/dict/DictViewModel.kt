@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
 import jatx.mydict.navigation.AddWordScreen
+import jatx.mydict.navigation.EditWordScreen
 import jatx.mydict.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,6 +24,10 @@ class DictViewModel : BaseViewModel() {
 
     fun addWord() {
         navigator.navigateTo(AddWordScreen(language))
+    }
+
+    fun editWord(word: Word) {
+        navigator.navigateTo(EditWordScreen(word))
     }
 
     fun startJob() {

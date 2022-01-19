@@ -8,4 +8,11 @@
     <string name="hint_comment">Комментарий:</string>
     <string name="hint_translation">Перевод:</string>
     <string name="title_add_word">Добавить слово</string>
+    <string name="btn_save">Сохранить</string>
+    <string name="btn_delete">Удалить</string>
+    <string name="btn_save_data">Выгрузить</string>
+    <string name="btn_load_data">Загрузить</string>
+    <string name="toast_save_data_success">Выгружено успешно</string>
+    <string name="toast_some_error">Ошибка</string>
+    <string name="toast_load_data_success">Загружено успешно</string>
 </resources>

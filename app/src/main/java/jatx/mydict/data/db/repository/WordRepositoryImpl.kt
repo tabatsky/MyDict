@@ -17,7 +17,24 @@ class WordRepositoryImpl(private val appDatabase: AppDatabase): WordRepository {
             list.map { it.toModel() }
         }
 
+    override suspend fun getAll(): List<Word> = appDatabase
+        .wordDao()
+        .getAll()
+        .map { it.toModel() }
+
+    override suspend fun insertReplaceList(list: List<Word>) = appDatabase
+        .wordDao()
+        .insertReplaceList(list.map { it.toEntity() })
+
     override suspend fun addWord(word: Word) = appDatabase
         .wordDao()
         .addWord(word.toEntity())
+
+    override suspend fun editWord(word: Word) = appDatabase
+        .wordDao()
+        .editWord(word.toEntity())
+
+    override suspend fun deleteWord(word: Word) = appDatabase
+        .wordDao()
+        .deleteWord(word.toEntity())
 }

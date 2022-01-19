@@ -11,6 +11,7 @@ import jatx.mydict.domain.models.Word
 class DictAdapter: RecyclerView.Adapter<DictAdapter.VH>() {
 
     private val words: ArrayList<Word> = arrayListOf()
+    var onWordClick: (Word) -> Unit = {}
 
     fun updateWords(words: List<Word>) {
         this.words.clear()
@@ -30,11 +31,14 @@ class DictAdapter: RecyclerView.Adapter<DictAdapter.VH>() {
             tvOriginal.text = word.original
             tvTranslation.text = word.translation
         }
+        holder.v.setOnClickListener {
+            onWordClick(word)
+        }
     }
 
     override fun getItemCount() = words.size
 
-    class VH(v: View): RecyclerView.ViewHolder(v) {
+    class VH(val v: View): RecyclerView.ViewHolder(v) {
         val binding = ItemDictBinding.bind(v)
     }
 }

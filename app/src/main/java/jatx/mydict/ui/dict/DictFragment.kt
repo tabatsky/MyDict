@@ -9,17 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import jatx.mydict.databinding.DictFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
 import jatx.mydict.domain.Language
-import jatx.mydict.navigation.Navigator
 
-class DictFragment() : BaseFragment() {
+class DictFragment : BaseFragment() {
 
     companion object {
         private lateinit var language: Language
 
         fun newInstance(language: Language): DictFragment {
-            val dictFragment = DictFragment()
             this.language = language
-            return dictFragment
+            return DictFragment()
         }
     }
 
@@ -52,6 +50,7 @@ class DictFragment() : BaseFragment() {
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.updateWords(it)
         }
+        adapter.onWordClick = { viewModel.editWord(it) }
     }
 
     override fun onStop() {
@@ -62,7 +61,7 @@ class DictFragment() : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this)[DictViewModel::class.java]
-        viewModel.injectActivity(requireActivity())
+        viewModel.injectFromActivity(requireActivity())
 
         viewModel.language = language
     }

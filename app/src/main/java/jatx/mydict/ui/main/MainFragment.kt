@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import jatx.mydict.R
 import jatx.mydict.databinding.MainFragmentBinding
 import jatx.mydict.domain.Language
-import jatx.mydict.navigation.DictScreen
-import jatx.mydict.navigation.Navigator
 import jatx.mydict.ui.base.BaseFragment
 
 class MainFragment : BaseFragment() {
@@ -30,17 +28,29 @@ class MainFragment : BaseFragment() {
 
         mainFragmentBinding = MainFragmentBinding.inflate(inflater, container, false)
 
-        mainFragmentBinding.btnEnglish.setOnClickListener {
-            viewModel.selectLanguage(Language.ENGLISH)
+        with(mainFragmentBinding) {
+            btnEnglish.setOnClickListener {
+                viewModel.selectLanguage(Language.ENGLISH)
+            }
+
+            btnDeutsch.setOnClickListener {
+                viewModel.selectLanguage(Language.DEUTSCH)
+            }
+
+            btnJapanese.setOnClickListener {
+                viewModel.selectLanguage(Language.JAPANESE)
+            }
+
+            btnLoadData.setOnClickListener {
+                viewModel.loadData()
+            }
+
+            btnSaveData.setOnClickListener {
+                viewModel.saveData()
+            }
         }
 
-        mainFragmentBinding.btnDeutsch.setOnClickListener {
-            viewModel.selectLanguage(Language.DEUTSCH)
-        }
 
-        mainFragmentBinding.btnJapanese.setOnClickListener {
-            viewModel.selectLanguage(Language.JAPANESE)
-        }
 
         return mainFragmentBinding.root
     }
@@ -49,7 +59,7 @@ class MainFragment : BaseFragment() {
         Log.e("MyDict", "onActivityCreated")
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.injectActivity(requireActivity())
+        viewModel.injectFromActivity(requireActivity())
     }
 
 }

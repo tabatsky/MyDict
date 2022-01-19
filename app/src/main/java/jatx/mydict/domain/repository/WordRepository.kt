@@ -6,5 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface WordRepository {
     fun getAllByLanguage(language: Language): Flow<List<Word>>
+    suspend fun getAll(): List<Word>
+    suspend fun insertReplaceList(list: List<Word>)
     suspend fun addWord(word: Word)
+    suspend fun editWord(word: Word)
+    suspend fun deleteWord(word: Word)
 }
