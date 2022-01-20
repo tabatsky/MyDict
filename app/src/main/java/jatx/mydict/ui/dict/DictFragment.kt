@@ -38,6 +38,10 @@ class DictFragment : BaseFragment() {
             viewModel.addWord()
         }
 
+        dictFragmentBinding.btnTesting.setOnClickListener {
+            viewModel.openTesting()
+        }
+
         dictFragmentBinding.rvWords.adapter = adapter
         dictFragmentBinding.rvWords.layoutManager = LinearLayoutManager(requireContext())
 

@@ -1,6 +1,7 @@
 package jatx.mydict.ui.addword
 
 import androidx.lifecycle.viewModelScope
+import jatx.mydict.R
 import jatx.mydict.domain.models.Word
 import jatx.mydict.navigation.AddWordScreen
 import jatx.mydict.navigation.EditWordScreen
@@ -54,7 +55,12 @@ class WordViewModel : BaseViewModel() {
         }
     }
 
-    fun deleteWord() {
+    fun askForDeleteWord() = dialogs
+        .showConfirmDialog(R.string.question_delete_word) {
+            deleteWord()
+        }
+
+    private fun deleteWord() {
         val screen = wordScreen
         if (screen is EditWordScreen) {
             viewModelScope.launch {

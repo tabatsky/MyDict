@@ -1,4 +1,4 @@
-package jatx.mydict.deps
+package jatx.mydict.contracts
 
 import jatx.mydict.domain.repository.WordRepository
 

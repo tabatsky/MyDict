@@ -3,16 +3,20 @@ package jatx.mydict.ui.dict
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import jatx.mydict.R
 import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
 import jatx.mydict.navigation.AddWordScreen
 import jatx.mydict.navigation.EditWordScreen
+import jatx.mydict.navigation.TestingScreen
 import jatx.mydict.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+const val MINIMUM_WORD_COUNT_FOR_TESTING = 4
 
 class DictViewModel : BaseViewModel() {
     lateinit var language: Language
@@ -28,6 +32,17 @@ class DictViewModel : BaseViewModel() {
 
     fun editWord(word: Word) {
         navigator.navigateTo(EditWordScreen(word))
+    }
+
+    fun openTesting() = viewModelScope.launch {
+        val count = deps.wordRepository.getCountByLanguage(language)
+        withContext(Dispatchers.Main) {
+            if (count < MINIMUM_WORD_COUNT_FOR_TESTING) {
+                toasts.showToast(R.string.toast_minimum_word_count)
+            } else {
+                navigator.navigateTo(TestingScreen(language))
+            }
+        }
     }
 
     fun startJob() {

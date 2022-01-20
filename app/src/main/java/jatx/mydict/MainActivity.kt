@@ -7,18 +7,22 @@ import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
-import jatx.mydict.backup.Backuper
+import jatx.mydict.backup.Backup
 import jatx.mydict.backup.BackupData
 import jatx.mydict.data.db.AppDatabase
 import jatx.mydict.data.db.repository.WordRepositoryImpl
-import jatx.mydict.deps.Deps
+import jatx.mydict.contracts.Deps
+import jatx.mydict.contracts.Dialogs
+import jatx.mydict.contracts.Toasts
 import jatx.mydict.navigation.*
 import jatx.mydict.ui.addword.WordFragment
 import jatx.mydict.ui.dict.DictFragment
 import jatx.mydict.ui.main.*
+import jatx.mydict.ui.testing.TestingFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,7 +30,7 @@ import java.io.File
 import java.io.PrintWriter
 import java.util.*
 
-class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
+class MainActivity : AppCompatActivity(), Navigator, Deps, Backup, Toasts, Dialogs {
 
     companion object {
         private var currentScreen: Screen = MainScreen
@@ -70,6 +74,9 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
             is WordScreen -> {
                 WordFragment.newInstance(screen)
             }
+            is TestingScreen -> {
+                TestingFragment.newInstance(screen.language)
+            }
         }
         commitFragment(fragment)
     }
@@ -87,6 +94,9 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
             }
             is EditWordScreen -> {
                 navigateTo(DictScreen(screen.word.language))
+            }
+            is TestingScreen -> {
+                navigateTo(DictScreen(screen.language))
             }
         }
     }
@@ -110,7 +120,10 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
     )
 
     override fun saveData() = saveLauncher.launch(
-        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
     )
 
     private fun onLoadPermissionGranted() {
@@ -170,7 +183,27 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backuper {
         }
     }
 
-    private fun showToast(toastText: String) {
+    override fun showToast(toastText: String) {
         Toast.makeText(this, toastText, Toast.LENGTH_LONG).show()
     }
+
+    override fun showToast(resId: Int) = showToast(getString(resId))
+
+    override fun showConfirmDialog(msg: String, onConfirm: () -> Unit) {
+        AlertDialog.Builder(this)
+            .setMessage(msg)
+            .setPositiveButton(R.string.yes) { dialog, _ ->
+                onConfirm()
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.no) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    override fun showConfirmDialog(msgResId: Int, onConfirm: () -> Unit) =
+        showConfirmDialog(getString(msgResId), onConfirm)
+
 }

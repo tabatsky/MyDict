@@ -2,7 +2,7 @@ package jatx.mydict.backup
 
 import jatx.mydict.domain.models.Word
 
-interface Backuper {
+interface Backup {
     fun loadData()
     fun saveData()
 }

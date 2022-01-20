@@ -30,13 +30,12 @@ class WordFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setTitle(getString(R.string.title_add_word))
-
         wordFragmentBinding = WordFragmentBinding.inflate(inflater, container, false)
 
         with(wordFragmentBinding) {
             when (val screen = wordScreen) {
                 is AddWordScreen -> {
+                    setTitle(getString(R.string.title_add_word))
                     btnAddWord.visibility = View.VISIBLE
                     btnSave.visibility = View.GONE
                     btnDelete.visibility = View.GONE
@@ -48,6 +47,7 @@ class WordFragment : BaseFragment() {
                     }
                 }
                 is EditWordScreen -> {
+                    setTitle(getString(R.string.title_edit_word))
                     btnAddWord.visibility = View.GONE
                     btnSave.visibility = View.VISIBLE
                     btnDelete.visibility = View.VISIBLE
@@ -61,7 +61,7 @@ class WordFragment : BaseFragment() {
                         viewModel.editWord(original, comment, translation)
                     }
                     btnDelete.setOnClickListener {
-                        viewModel.deleteWord()
+                        viewModel.askForDeleteWord()
                     }
                 }
             }

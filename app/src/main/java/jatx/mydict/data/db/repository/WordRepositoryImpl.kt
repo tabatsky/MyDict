@@ -10,14 +10,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class WordRepositoryImpl(private val appDatabase: AppDatabase): WordRepository {
-    override fun getAllByLanguage(language: Language): Flow<List<Word>> = appDatabase
+    override fun getAllByLanguage(language: Language) = appDatabase
         .wordDao()
         .getAllByLanguage(language.dbString)
         .map { list ->
             list.map { it.toModel() }
         }
 
-    override suspend fun getAll(): List<Word> = appDatabase
+    override suspend fun getCountByLanguage(language: Language) = appDatabase
+        .wordDao()
+        .getCountByLanguage(language.dbString)
+
+    override suspend fun getAll() = appDatabase
         .wordDao()
         .getAll()
         .map { it.toModel() }

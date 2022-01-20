@@ -9,6 +9,9 @@ interface WordDao {
     @Query("SELECT * FROM words WHERE language=:language ORDER BY original")
     fun getAllByLanguage(language: String): Flow<List<WordEntity>>
 
+    @Query("SELECT COUNT(*) FROM words WHERE language=:language")
+    suspend fun getCountByLanguage(language: String): Int
+
     @Query("SELECT * FROM words ORDER BY id")
     suspend fun getAll(): List<WordEntity>
 

@@ -16,3 +16,5 @@ class DictScreen(val language: Language): Screen()
 sealed class WordScreen: Screen()
 class AddWordScreen(val language: Language): WordScreen()
 class EditWordScreen(val word: Word): WordScreen()
+
+class TestingScreen(val language: Language): Screen()

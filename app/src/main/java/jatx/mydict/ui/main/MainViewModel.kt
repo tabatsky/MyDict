@@ -9,7 +9,7 @@ class MainViewModel : BaseViewModel() {
         navigator.navigateTo(DictScreen(language))
     }
 
-    fun loadData() = backuper.loadData()
+    fun loadData() = backup.loadData()
 
-    fun saveData() = backuper.saveData()
+    fun saveData() = backup.saveData()
 }
