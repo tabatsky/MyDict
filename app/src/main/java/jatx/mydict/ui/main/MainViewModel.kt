@@ -1,7 +1,7 @@
 package jatx.mydict.ui.main
 
+import jatx.mydict.contracts.DictScreen
 import jatx.mydict.domain.Language
-import jatx.mydict.navigation.DictScreen
 import jatx.mydict.ui.base.BaseViewModel
 
 class MainViewModel : BaseViewModel() {

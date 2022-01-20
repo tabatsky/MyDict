@@ -1,4 +1,4 @@
-package jatx.mydict.navigation
+package jatx.mydict.contracts
 
 import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word

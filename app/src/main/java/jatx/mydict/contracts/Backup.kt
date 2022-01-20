@@ -1,4 +1,4 @@
-package jatx.mydict.backup
+package jatx.mydict.contracts
 
 import jatx.mydict.domain.models.Word
 

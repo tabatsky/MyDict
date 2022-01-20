@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jatx.mydict.R
+import jatx.mydict.contracts.AddWordScreen
+import jatx.mydict.contracts.EditWordScreen
+import jatx.mydict.contracts.WordScreen
 import jatx.mydict.databinding.WordFragmentBinding
-import jatx.mydict.navigation.AddWordScreen
-import jatx.mydict.navigation.EditWordScreen
-import jatx.mydict.navigation.WordScreen
 import jatx.mydict.ui.base.BaseFragment
 
 class WordFragment : BaseFragment() {

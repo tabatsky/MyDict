@@ -2,10 +2,10 @@ package jatx.mydict.ui.addword
 
 import androidx.lifecycle.viewModelScope
 import jatx.mydict.R
+import jatx.mydict.contracts.AddWordScreen
+import jatx.mydict.contracts.EditWordScreen
+import jatx.mydict.contracts.WordScreen
 import jatx.mydict.domain.models.Word
-import jatx.mydict.navigation.AddWordScreen
-import jatx.mydict.navigation.EditWordScreen
-import jatx.mydict.navigation.WordScreen
 import jatx.mydict.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

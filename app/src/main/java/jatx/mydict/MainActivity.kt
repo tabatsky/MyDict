@@ -11,14 +11,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
-import jatx.mydict.backup.Backup
-import jatx.mydict.backup.BackupData
+import jatx.mydict.contracts.*
 import jatx.mydict.data.db.AppDatabase
 import jatx.mydict.data.db.repository.WordRepositoryImpl
-import jatx.mydict.contracts.Deps
-import jatx.mydict.contracts.Dialogs
-import jatx.mydict.contracts.Toasts
-import jatx.mydict.navigation.*
 import jatx.mydict.ui.addword.WordFragment
 import jatx.mydict.ui.dict.DictFragment
 import jatx.mydict.ui.main.*

@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import jatx.mydict.R
+import jatx.mydict.contracts.AddWordScreen
+import jatx.mydict.contracts.EditWordScreen
+import jatx.mydict.contracts.TestingScreen
 import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
-import jatx.mydict.navigation.AddWordScreen
-import jatx.mydict.navigation.EditWordScreen
-import jatx.mydict.navigation.TestingScreen
 import jatx.mydict.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

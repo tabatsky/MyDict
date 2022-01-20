@@ -2,11 +2,7 @@ package jatx.mydict.ui.base
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel
-import jatx.mydict.backup.Backup
-import jatx.mydict.contracts.Deps
-import jatx.mydict.contracts.Dialogs
-import jatx.mydict.contracts.Toasts
-import jatx.mydict.navigation.Navigator
+import jatx.mydict.contracts.*
 
 open class BaseViewModel: ViewModel() {
     lateinit var navigator: Navigator
