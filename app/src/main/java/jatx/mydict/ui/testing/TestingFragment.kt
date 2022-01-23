@@ -6,20 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import jatx.mydict.R
 import jatx.mydict.databinding.TestingFragmentBinding
 import jatx.mydict.domain.Language
 import jatx.mydict.ui.base.BaseFragment
-import jatx.mydict.ui.dict.DictFragment
+import java.lang.IllegalArgumentException
 
 class TestingFragment : BaseFragment() {
 
     companion object {
-        private lateinit var language: Language
+        private val KEY_LANGUAGE = "language"
 
         fun newInstance(language: Language): TestingFragment {
-            this.language = language
-            return TestingFragment()
+            val testingFragment = TestingFragment()
+            testingFragment.arguments = bundleOf(KEY_LANGUAGE to language)
+            return testingFragment
         }
     }
 
@@ -31,7 +33,10 @@ class TestingFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setTitle(getString(R.string.title_testing))
+        val language = requireArguments().getSerializable(KEY_LANGUAGE)
+                as? Language ?: throw IllegalArgumentException()
+
+        setTitle(getString(R.string.title_testing) + language.rusString)
         testingFragmentBinding = TestingFragmentBinding.inflate(inflater, container, false)
 
         with(testingFragmentBinding) {
@@ -49,6 +54,9 @@ class TestingFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this)[TestingViewModel::class.java]
         viewModel.injectFromActivity(requireActivity())
+
+        val language = requireArguments().getSerializable(KEY_LANGUAGE)
+                as? Language ?: throw IllegalArgumentException()
 
         viewModel.language = language
     }

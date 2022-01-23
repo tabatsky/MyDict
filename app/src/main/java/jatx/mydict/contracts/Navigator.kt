@@ -2,6 +2,7 @@ package jatx.mydict.contracts
 
 import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
+import kotlinx.serialization.Serializable
 
 interface Navigator {
     fun navigateTo(screen: Screen)
@@ -11,10 +12,13 @@ interface Navigator {
 sealed class Screen
 
 object MainScreen: Screen()
-class DictScreen(val language: Language): Screen()
+data class DictScreen(val language: Language): Screen()
 
+@Serializable
 sealed class WordScreen: Screen()
-class AddWordScreen(val language: Language): WordScreen()
-class EditWordScreen(val word: Word): WordScreen()
+@Serializable
+data class AddWordScreen(val language: Language): WordScreen()
+@Serializable
+data class EditWordScreen(val word: Word): WordScreen()
 
-class TestingScreen(val language: Language): Screen()
+data class TestingScreen(val language: Language): Screen()

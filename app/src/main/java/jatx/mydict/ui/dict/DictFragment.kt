@@ -5,19 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import jatx.mydict.databinding.DictFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
 import jatx.mydict.domain.Language
+import java.lang.IllegalArgumentException
 
 class DictFragment : BaseFragment() {
 
     companion object {
-        private lateinit var language: Language
+        private val KEY_LANGUAGE = "language"
 
         fun newInstance(language: Language): DictFragment {
-            this.language = language
-            return DictFragment()
+            val dictFragment = DictFragment()
+            dictFragment.arguments = bundleOf(KEY_LANGUAGE to language)
+            return dictFragment
         }
     }
 
@@ -30,6 +33,8 @@ class DictFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val language = requireArguments().getSerializable(KEY_LANGUAGE)
+                as? Language ?: throw IllegalArgumentException()
         setTitle(language.rusString)
 
         dictFragmentBinding = DictFragmentBinding.inflate(inflater, container, false)
@@ -66,6 +71,9 @@ class DictFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this)[DictViewModel::class.java]
         viewModel.injectFromActivity(requireActivity())
+
+        val language = requireArguments().getSerializable(KEY_LANGUAGE)
+                as? Language ?: throw IllegalArgumentException()
 
         viewModel.language = language
     }

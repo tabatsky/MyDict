@@ -1,7 +1,9 @@
 package jatx.mydict.domain.models
 
 import jatx.mydict.domain.Language
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Word(
     val id: Int = 0,
     val original: String,

@@ -5,21 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import jatx.mydict.R
 import jatx.mydict.contracts.AddWordScreen
 import jatx.mydict.contracts.EditWordScreen
 import jatx.mydict.contracts.WordScreen
 import jatx.mydict.databinding.WordFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
+import kotlinx.serialization.json.Json
+import java.lang.IllegalArgumentException
 
 class WordFragment : BaseFragment() {
 
     companion object {
-        private lateinit var wordScreen: WordScreen
+        private const val KEY_WORD_SCREEN = "wordScreen"
 
         fun newInstance(wordScreen: WordScreen): WordFragment {
-            this.wordScreen = wordScreen
-            return WordFragment()
+            val wordFragment = WordFragment()
+            wordFragment.arguments = bundleOf(KEY_WORD_SCREEN to Json.encodeToString(WordScreen.serializer(), wordScreen))
+            return wordFragment
         }
     }
 
@@ -33,7 +37,10 @@ class WordFragment : BaseFragment() {
         wordFragmentBinding = WordFragmentBinding.inflate(inflater, container, false)
 
         with(wordFragmentBinding) {
-            when (val screen = wordScreen) {
+            val screen = Json.decodeFromString(
+                WordScreen.serializer(),
+                requireArguments().getString(KEY_WORD_SCREEN) ?: throw IllegalArgumentException())
+            when (screen) {
                 is AddWordScreen -> {
                     setTitle(getString(R.string.title_add_word))
                     btnAddWord.visibility = View.VISIBLE
@@ -75,7 +82,10 @@ class WordFragment : BaseFragment() {
         viewModel = ViewModelProvider(this)[WordViewModel::class.java]
         viewModel.injectFromActivity(requireActivity())
 
-        viewModel.wordScreen = wordScreen
+        val screen = Json.decodeFromString(
+            WordScreen.serializer(),
+            requireArguments().getString(KEY_WORD_SCREEN) ?: throw IllegalArgumentException())
+        viewModel.wordScreen = screen
     }
 
 }
