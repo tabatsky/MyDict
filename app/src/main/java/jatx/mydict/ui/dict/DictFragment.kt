@@ -5,18 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import jatx.mydict.databinding.DictFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
-import jatx.mydict.domain.Language
-import java.lang.IllegalArgumentException
 
 class DictFragment : BaseFragment() {
 
-    companion object {
-        const val KEY_LANGUAGE = "language"
-    }
+    private val args by navArgs<DictFragmentArgs>()
 
     private lateinit var dictFragmentBinding: DictFragmentBinding
     private lateinit var viewModel: DictViewModel
@@ -62,10 +58,7 @@ class DictFragment : BaseFragment() {
         viewModel = ViewModelProvider(this)[DictViewModel::class.java]
         viewModel.injectFromActivity(requireActivity())
 
-        val language = requireArguments().getSerializable(KEY_LANGUAGE)
-                as? Language ?: throw IllegalArgumentException()
-
-        viewModel.language = language
+        viewModel.language = args.language
     }
 
 }

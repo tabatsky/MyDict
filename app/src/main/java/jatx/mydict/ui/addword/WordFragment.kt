@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.navArgs
 import jatx.mydict.R
 import jatx.mydict.contracts.AddWordScreen
 import jatx.mydict.contracts.EditWordScreen
@@ -17,15 +18,7 @@ import java.lang.IllegalArgumentException
 
 class WordFragment : BaseFragment() {
 
-    companion object {
-        const val KEY_WORD_SCREEN = "wordScreen"
-
-        fun newInstance(wordScreen: WordScreen): WordFragment {
-            val wordFragment = WordFragment()
-            wordFragment.arguments = bundleOf(KEY_WORD_SCREEN to Json.encodeToString(WordScreen.serializer(), wordScreen))
-            return wordFragment
-        }
-    }
+    private val args by navArgs<WordFragmentArgs>()
 
     private lateinit var wordFragmentBinding: WordFragmentBinding
     private lateinit var viewModel: WordViewModel
@@ -37,9 +30,7 @@ class WordFragment : BaseFragment() {
         wordFragmentBinding = WordFragmentBinding.inflate(inflater, container, false)
 
         with(wordFragmentBinding) {
-            val screen = Json.decodeFromString(
-                WordScreen.serializer(),
-                requireArguments().getString(KEY_WORD_SCREEN) ?: throw IllegalArgumentException())
+            val screen = Json.decodeFromString(WordScreen.serializer(), args.wordScreenStr)
             when (screen) {
                 is AddWordScreen -> {
                     btnAddWord.visibility = View.VISIBLE
@@ -80,9 +71,7 @@ class WordFragment : BaseFragment() {
         viewModel = ViewModelProvider(this)[WordViewModel::class.java]
         viewModel.injectFromActivity(requireActivity())
 
-        val screen = Json.decodeFromString(
-            WordScreen.serializer(),
-            requireArguments().getString(KEY_WORD_SCREEN) ?: throw IllegalArgumentException())
+        val screen = Json.decodeFromString(WordScreen.serializer(),args.wordScreenStr)
         viewModel.wordScreen = screen
     }
 

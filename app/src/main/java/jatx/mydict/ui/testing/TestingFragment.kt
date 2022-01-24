@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.navArgs
 import jatx.mydict.R
 import jatx.mydict.databinding.TestingFragmentBinding
 import jatx.mydict.domain.Language
@@ -15,9 +16,7 @@ import java.lang.IllegalArgumentException
 
 class TestingFragment : BaseFragment() {
 
-    companion object {
-        const val KEY_LANGUAGE = "language"
-    }
+    private val args by navArgs<TestingFragmentArgs>()
 
     private lateinit var testingFragmentBinding: TestingFragmentBinding
     private lateinit var viewModel: TestingViewModel
@@ -45,10 +44,7 @@ class TestingFragment : BaseFragment() {
         viewModel = ViewModelProvider(this)[TestingViewModel::class.java]
         viewModel.injectFromActivity(requireActivity())
 
-        val language = requireArguments().getSerializable(KEY_LANGUAGE)
-                as? Language ?: throw IllegalArgumentException()
-
-        viewModel.language = language
+        viewModel.language = args.language
     }
 
     override fun onStart() {

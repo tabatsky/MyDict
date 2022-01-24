@@ -38,7 +38,7 @@
         android:label="{title}"
         tools:layout="@layout/word_fragment" >
         <argument
-            android:name="wordScreen"
+            android:name="wordScreenStr"
             app:argType="string" />
         <argument
             android:name="title"
