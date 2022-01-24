@@ -24,8 +24,6 @@ class MainFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setTitle(getString(R.string.app_name))
-
         mainFragmentBinding = MainFragmentBinding.inflate(inflater, container, false)
 
         with(mainFragmentBinding) {

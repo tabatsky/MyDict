@@ -8,28 +8,27 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.gson.Gson
 import jatx.mydict.contracts.*
 import jatx.mydict.data.db.AppDatabase
 import jatx.mydict.data.db.repository.WordRepositoryImpl
-import jatx.mydict.ui.addword.WordFragment
-import jatx.mydict.ui.dict.DictFragment
+import jatx.mydict.ui.dict.DictFragmentDirections
 import jatx.mydict.ui.main.*
-import jatx.mydict.ui.testing.TestingFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.PrintWriter
 import java.util.*
 
 class MainActivity : AppCompatActivity(), Navigator, Deps, Backup, Toasts, Dialogs {
 
-    companion object {
-        private var currentScreen: Screen = MainScreen
-    }
+    private lateinit var navController: NavController
 
     private val loadLauncher =
         registerForActivityResult(
@@ -52,58 +51,56 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backup, Toasts, Dialo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            navigateTo(MainScreen)
-        }
+
+        val navHost = supportFragmentManager.findFragmentById(R.id.fragment_container)
+            as NavHostFragment
+        navController = navHost.navController
+
+        setupActionBarWithNavController(navController)
     }
 
     override fun navigateTo(screen: Screen) {
-        currentScreen = screen
-        val fragment = when (screen) {
+        when (screen) {
             is MainScreen -> {
-                MainFragment.newInstance()
+                navController.navigate(R.id.mainFragment)
             }
             is DictScreen -> {
-                DictFragment.newInstance(screen.language)
+                val title = getString(R.string.title_dict) + screen.language.rusString
+                val action = MainFragmentDirections.actionMainFragmentToDictFragment(screen.language, title)
+                navController.navigate(action)
             }
             is WordScreen -> {
-                WordFragment.newInstance(screen)
+                val wordScreenStr =  Json.encodeToString(WordScreen.serializer(), screen)
+                val title = when (screen) {
+                    is AddWordScreen -> getString(R.string.title_add_word)
+                    is EditWordScreen -> getString(R.string.title_edit_word)
+                }
+                val action = DictFragmentDirections.actionDictFragmentToWordFragment(wordScreenStr, title)
+                navController.navigate(action)
             }
             is TestingScreen -> {
-                TestingFragment.newInstance(screen.language)
+                val title = getString(R.string.title_testing) + screen.language.rusString
+                val action = DictFragmentDirections.actionDictFragmentToTestingFragment(screen.language, title)
+                navController.navigate(action)
             }
         }
-        commitFragment(fragment)
     }
 
     override fun back() {
-        when (val screen = currentScreen) {
-            is MainScreen -> {
-                finish()
-            }
-            is DictScreen -> {
-                navigateTo(MainScreen)
-            }
-            is AddWordScreen -> {
-                navigateTo(DictScreen(screen.language))
-            }
-            is EditWordScreen -> {
-                navigateTo(DictScreen(screen.word.language))
-            }
-            is TestingScreen -> {
-                navigateTo(DictScreen(screen.language))
-            }
+        if (navController.graph.startDestination == navController.currentDestination?.id) {
+            finish()
+        } else {
+            navController.popBackStack()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        back()
+        return true
     }
 
     override fun onBackPressed() {
         back()
-    }
-
-    private fun commitFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container, fragment)
-            .commitNow()
     }
 
     override val wordRepository by lazy {

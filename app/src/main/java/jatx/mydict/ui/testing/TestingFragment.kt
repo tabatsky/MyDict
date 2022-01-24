@@ -16,13 +16,7 @@ import java.lang.IllegalArgumentException
 class TestingFragment : BaseFragment() {
 
     companion object {
-        private val KEY_LANGUAGE = "language"
-
-        fun newInstance(language: Language): TestingFragment {
-            val testingFragment = TestingFragment()
-            testingFragment.arguments = bundleOf(KEY_LANGUAGE to language)
-            return testingFragment
-        }
+        const val KEY_LANGUAGE = "language"
     }
 
     private lateinit var testingFragmentBinding: TestingFragmentBinding
@@ -33,10 +27,6 @@ class TestingFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val language = requireArguments().getSerializable(KEY_LANGUAGE)
-                as? Language ?: throw IllegalArgumentException()
-
-        setTitle(getString(R.string.title_testing) + language.rusString)
         testingFragmentBinding = TestingFragmentBinding.inflate(inflater, container, false)
 
         with(testingFragmentBinding) {

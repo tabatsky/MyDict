@@ -19,6 +19,7 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="question_delete_word">Удалить запись?</string>
+    <string name="title_dict">Словарь:\u0020</string>
     <string name="title_testing">Тестирование:\u0020</string>
     <string name="toast_minimum_word_count">В словаре должно быть хотя бы 4 слова</string>
     <string name="btn_testing">Тестирование</string>

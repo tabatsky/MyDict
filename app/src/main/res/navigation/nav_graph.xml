@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="jatx.mydict.ui.main.MainFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_dictFragment"
+            app:destination="@id/dictFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dictFragment"
+        android:name="jatx.mydict.ui.dict.DictFragment"
+        android:label="{title}"
+        tools:layout="@layout/dict_fragment" >
+        <action
+            android:id="@+id/action_dictFragment_to_wordFragment"
+            app:destination="@id/wordFragment" />
+        <action
+            android:id="@+id/action_dictFragment_to_testingFragment"
+            app:destination="@id/testingFragment" />
+        <argument
+            android:name="language"
+            app:argType="jatx.mydict.domain.Language" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/wordFragment"
+        android:name="jatx.mydict.ui.addword.WordFragment"
+        android:label="{title}"
+        tools:layout="@layout/word_fragment" >
+        <argument
+            android:name="wordScreen"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/testingFragment"
+        android:name="jatx.mydict.ui.testing.TestingFragment"
+        android:label="{title}"
+        tools:layout="@layout/testing_fragment" >
+        <argument
+            android:name="language"
+            app:argType="jatx.mydict.domain.Language" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+</navigation>

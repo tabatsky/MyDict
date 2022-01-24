@@ -15,13 +15,7 @@ import java.lang.IllegalArgumentException
 class DictFragment : BaseFragment() {
 
     companion object {
-        private val KEY_LANGUAGE = "language"
-
-        fun newInstance(language: Language): DictFragment {
-            val dictFragment = DictFragment()
-            dictFragment.arguments = bundleOf(KEY_LANGUAGE to language)
-            return dictFragment
-        }
+        const val KEY_LANGUAGE = "language"
     }
 
     private lateinit var dictFragmentBinding: DictFragmentBinding
@@ -33,10 +27,6 @@ class DictFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val language = requireArguments().getSerializable(KEY_LANGUAGE)
-                as? Language ?: throw IllegalArgumentException()
-        setTitle(language.rusString)
-
         dictFragmentBinding = DictFragmentBinding.inflate(inflater, container, false)
 
         dictFragmentBinding.btnAddWord.setOnClickListener {

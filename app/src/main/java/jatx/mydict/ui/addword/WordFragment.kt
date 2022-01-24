@@ -18,7 +18,7 @@ import java.lang.IllegalArgumentException
 class WordFragment : BaseFragment() {
 
     companion object {
-        private const val KEY_WORD_SCREEN = "wordScreen"
+        const val KEY_WORD_SCREEN = "wordScreen"
 
         fun newInstance(wordScreen: WordScreen): WordFragment {
             val wordFragment = WordFragment()
@@ -42,7 +42,6 @@ class WordFragment : BaseFragment() {
                 requireArguments().getString(KEY_WORD_SCREEN) ?: throw IllegalArgumentException())
             when (screen) {
                 is AddWordScreen -> {
-                    setTitle(getString(R.string.title_add_word))
                     btnAddWord.visibility = View.VISIBLE
                     btnSave.visibility = View.GONE
                     btnDelete.visibility = View.GONE
@@ -54,7 +53,6 @@ class WordFragment : BaseFragment() {
                     }
                 }
                 is EditWordScreen -> {
-                    setTitle(getString(R.string.title_edit_word))
                     btnAddWord.visibility = View.GONE
                     btnSave.visibility = View.VISIBLE
                     btnDelete.visibility = View.VISIBLE
