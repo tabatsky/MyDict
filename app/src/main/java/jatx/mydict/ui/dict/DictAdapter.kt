@@ -28,7 +28,7 @@ class DictAdapter: RecyclerView.Adapter<DictAdapter.VH>() {
     override fun onBindViewHolder(holder: VH, position: Int) {
         val word = words[position]
         with (holder.binding) {
-            tvOriginal.text = word.original
+            tvOriginal.text = "${position + 1}. ${word.original}"
             tvTranslation.text = word.translation
         }
         holder.v.setOnClickListener {
