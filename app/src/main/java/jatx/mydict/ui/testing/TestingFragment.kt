@@ -58,15 +58,21 @@ class TestingFragment : BaseFragment() {
                     allTV[index].setOnClickListener {
                         if (index == currentQuestion.correctIndex) {
                             allTV[index].setBackgroundResource(R.color.green)
+                            viewModel.correctAnswer()
                         } else {
                             allTV[index].setBackgroundResource(R.color.red)
                             allTV[currentQuestion.correctIndex].setBackgroundResource(R.color.green)
+                            viewModel.incorrectAnswer()
                         }
 
                         allTV.forEach { it.setOnClickListener {  } }
                     }
                 }
             }
+        }
+        viewModel.stats.observe(viewLifecycleOwner) {
+            testingFragmentBinding.tvStatsCorrect.text = it.first.toString()
+            testingFragmentBinding.tvStatsIncorrect.text = it.second.toString()
         }
         viewModel.startJob()
     }

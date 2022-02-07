@@ -2,6 +2,7 @@ package jatx.mydict.data.db
 
 import android.content.Context
 import android.util.Log
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -12,7 +13,10 @@ import jatx.mydict.data.db.entity.WordEntity
     entities = [
         WordEntity::class
     ],
-    version = 1
+    version = 2,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun wordDao(): WordDao

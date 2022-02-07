@@ -7,6 +7,7 @@ import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
 import jatx.mydict.domain.repository.WordRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
 class WordRepositoryImpl(private val appDatabase: AppDatabase): WordRepository {
@@ -16,6 +17,14 @@ class WordRepositoryImpl(private val appDatabase: AppDatabase): WordRepository {
         .map { list ->
             list.map { it.toModel() }
         }
+
+    override fun getStatsByLanguage(language: Language): Flow<Pair<Int, Int>> {
+        val correctFlow = appDatabase.wordDao().getCorrectAnswerSumByLanguage(language.dbString)
+        val incorrectFlow = appDatabase.wordDao().getIncorrectAnswerSumByLanguage(language.dbString)
+        return correctFlow.combine(incorrectFlow) { correct, incorrect ->
+            correct to incorrect
+        }
+    }
 
     override suspend fun getCountByLanguage(language: Language) = appDatabase
         .wordDao()

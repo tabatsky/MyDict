@@ -12,6 +12,12 @@ interface WordDao {
     @Query("SELECT COUNT(*) FROM words WHERE language=:language")
     suspend fun getCountByLanguage(language: String): Int
 
+    @Query("SELECT SUM(correctAnswerCount) FROM words WHERE language=:language")
+    fun getCorrectAnswerSumByLanguage(language: String): Flow<Int>
+
+    @Query("SELECT SUM(incorrectAnswerCount) FROM words WHERE language=:language")
+    fun getIncorrectAnswerSumByLanguage(language: String): Flow<Int>
+
     @Query("SELECT * FROM words ORDER BY id")
     suspend fun getAll(): List<WordEntity>
 

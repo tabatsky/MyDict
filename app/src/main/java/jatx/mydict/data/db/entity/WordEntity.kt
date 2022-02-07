@@ -1,5 +1,6 @@
 package jatx.mydict.data.db.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -18,7 +19,9 @@ data class WordEntity(
     val original: String,
     val comment: String,
     val translation: String,
-    val language: String
+    val language: String,
+    @ColumnInfo(defaultValue = "0") val correctAnswerCount: Int,
+    @ColumnInfo(defaultValue = "0") val incorrectAnswerCount: Int
 )
 
 fun WordEntity.toModel() = Word(
@@ -26,7 +29,9 @@ fun WordEntity.toModel() = Word(
     original = original,
     comment = comment,
     translation = translation,
-    language = Language.getByDbString(language)
+    language = Language.getByDbString(language),
+    correctAnswerCount = correctAnswerCount,
+    incorrectAnswerCount = incorrectAnswerCount
 )
 
 fun Word.toEntity() = WordEntity(
@@ -34,5 +39,7 @@ fun Word.toEntity() = WordEntity(
     original = original,
     comment = comment,
     translation = translation,
-    language = language.dbString
+    language = language.dbString,
+    correctAnswerCount = correctAnswerCount,
+    incorrectAnswerCount = incorrectAnswerCount
 )

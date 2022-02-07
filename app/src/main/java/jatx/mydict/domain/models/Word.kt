@@ -9,5 +9,7 @@ data class Word(
     val original: String,
     val comment: String,
     val translation: String,
-    val language: Language
+    val language: Language,
+    var correctAnswerCount: Int = 0,
+    var incorrectAnswerCount: Int = 0
 )
