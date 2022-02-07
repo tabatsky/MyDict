@@ -26,9 +26,9 @@ class WordViewModel : BaseViewModel() {
                         language = screen.language
                     )
                     deps.wordRepository.addWord(word)
-                }
-                withContext(Dispatchers.Main) {
-                    navigator.back()
+                    withContext(Dispatchers.Main) {
+                        navigator.back()
+                    }
                 }
             }
         }
@@ -47,9 +47,9 @@ class WordViewModel : BaseViewModel() {
                         language = screen.word.language
                     )
                     deps.wordRepository.editWord(changedWord)
-                }
-                withContext(Dispatchers.Main) {
-                    navigator.back()
+                    withContext(Dispatchers.Main) {
+                        navigator.back()
+                    }
                 }
             }
         }
@@ -66,9 +66,9 @@ class WordViewModel : BaseViewModel() {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     deps.wordRepository.deleteWord(screen.word)
-                }
-                withContext(Dispatchers.Main) {
-                    navigator.back()
+                    withContext(Dispatchers.Main) {
+                        navigator.back()
+                    }
                 }
             }
         }

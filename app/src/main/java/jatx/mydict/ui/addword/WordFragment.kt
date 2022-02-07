@@ -1,27 +1,31 @@
 package jatx.mydict.ui.addword
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import jatx.mydict.R
 import jatx.mydict.contracts.AddWordScreen
 import jatx.mydict.contracts.EditWordScreen
 import jatx.mydict.contracts.WordScreen
 import jatx.mydict.databinding.WordFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
 import kotlinx.serialization.json.Json
-import java.lang.IllegalArgumentException
 
 class WordFragment : BaseFragment() {
 
     private val args by navArgs<WordFragmentArgs>()
 
+    private val viewModel: WordViewModel by lazy {
+        ViewModelProvider(this)[WordViewModel::class.java].apply {
+            injectFromActivity(requireActivity())
+            val screen = Json.decodeFromString(WordScreen.serializer(), args.wordScreenStr)
+            wordScreen = screen
+        }
+    }
+
     private lateinit var wordFragmentBinding: WordFragmentBinding
-    private lateinit var viewModel: WordViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,15 +68,6 @@ class WordFragment : BaseFragment() {
         }
 
         return wordFragmentBinding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this)[WordViewModel::class.java]
-        viewModel.injectFromActivity(requireActivity())
-
-        val screen = Json.decodeFromString(WordScreen.serializer(),args.wordScreenStr)
-        viewModel.wordScreen = screen
     }
 
 }

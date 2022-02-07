@@ -1,10 +1,10 @@
 package jatx.mydict.ui.dict
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import jatx.mydict.databinding.DictFragmentBinding
@@ -14,8 +14,14 @@ class DictFragment : BaseFragment() {
 
     private val args by navArgs<DictFragmentArgs>()
 
+    private val viewModel: DictViewModel by lazy {
+       ViewModelProvider(this)[DictViewModel::class.java].apply {
+           injectFromActivity(requireActivity())
+           language = args.language
+       }
+    }
+
     private lateinit var dictFragmentBinding: DictFragmentBinding
-    private lateinit var viewModel: DictViewModel
 
     private val adapter = DictAdapter()
 
@@ -51,14 +57,6 @@ class DictFragment : BaseFragment() {
     override fun onStop() {
         viewModel.stopJob()
         super.onStop()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this)[DictViewModel::class.java]
-        viewModel.injectFromActivity(requireActivity())
-
-        viewModel.language = args.language
     }
 
 }

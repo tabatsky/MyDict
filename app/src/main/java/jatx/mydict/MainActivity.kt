@@ -1,13 +1,13 @@
 package jatx.mydict
 
 import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -17,7 +17,7 @@ import jatx.mydict.contracts.*
 import jatx.mydict.data.db.AppDatabase
 import jatx.mydict.data.db.repository.WordRepositoryImpl
 import jatx.mydict.ui.dict.DictFragmentDirections
-import jatx.mydict.ui.main.*
+import jatx.mydict.ui.main.MainFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backup, Toasts, Dialo
     }
 
     override fun back() {
+        Log.e("navigator", "back")
         if (navController.graph.startDestination == navController.currentDestination?.id) {
             finish()
         } else {

@@ -1,25 +1,28 @@
 package jatx.mydict.ui.testing
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import jatx.mydict.R
 import jatx.mydict.databinding.TestingFragmentBinding
-import jatx.mydict.domain.Language
 import jatx.mydict.ui.base.BaseFragment
-import java.lang.IllegalArgumentException
 
 class TestingFragment : BaseFragment() {
 
     private val args by navArgs<TestingFragmentArgs>()
 
+    private val viewModel: TestingViewModel by lazy {
+        ViewModelProvider(this)[TestingViewModel::class.java].apply {
+            injectFromActivity(requireActivity())
+            language = args.language
+        }
+    }
+
     private lateinit var testingFragmentBinding: TestingFragmentBinding
-    private lateinit var viewModel: TestingViewModel
     private lateinit var allTV: List<TextView>
 
     override fun onCreateView(
@@ -37,14 +40,6 @@ class TestingFragment : BaseFragment() {
         }
 
         return testingFragmentBinding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this)[TestingViewModel::class.java]
-        viewModel.injectFromActivity(requireActivity())
-
-        viewModel.language = args.language
     }
 
     override fun onStart() {
