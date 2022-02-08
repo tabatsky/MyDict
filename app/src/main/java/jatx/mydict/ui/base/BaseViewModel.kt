@@ -6,44 +6,32 @@ import androidx.lifecycle.ViewModel
 import jatx.mydict.contracts.*
 
 open class BaseViewModel: ViewModel() {
-    private var _navigator: Navigator? = null
-    private var _deps: Deps? = null
-    private var _backup: Backup? = null
-    private var _toasts: Toasts? = null
-    private var _dialogs: Dialogs? = null
+    private var activity: Activity? = null
 
     val navigator: Navigator
-        get() = _navigator ?: throw IllegalStateException()
+        get() = activity as? Navigator ?: throw IllegalStateException()
 
     val deps: Deps
-        get() = _deps ?: throw IllegalStateException()
+        get() = activity as? Deps ?: throw IllegalStateException()
 
     val backup: Backup
-        get() = _backup ?: throw IllegalStateException()
+        get() = activity as? Backup ?: throw IllegalStateException()
 
     val toasts: Toasts
-        get() = _toasts ?: throw IllegalStateException()
+        get() = activity as? Toasts ?: throw IllegalStateException()
 
     val dialogs: Dialogs
-        get() = _dialogs ?: throw IllegalStateException()
+        get() = activity as? Dialogs ?: throw IllegalStateException()
 
 
     fun injectFromActivity(activity: Activity) {
-        _navigator = activity as Navigator
-        _deps = activity as Deps
-        _backup = activity as Backup
-        _toasts = activity as Toasts
-        _dialogs = activity as Dialogs
+        this.activity = activity
     }
 
     override fun onCleared() {
         super.onCleared()
 
-        _navigator = null
-        _deps = null
-        _backup = null
-        _toasts = null
-        _dialogs = null
+        activity = null
 
         Log.e("BaseViewModel", "onCleared()")
     }
