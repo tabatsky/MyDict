@@ -1,6 +1,7 @@
 package jatx.mydict.ui.dict
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,6 @@ class DictFragment : BaseFragment() {
 
     private val viewModel: DictViewModel by lazy {
        ViewModelProvider(this)[DictViewModel::class.java].apply {
-           injectFromActivity(requireActivity())
            language = args.language
        }
     }
@@ -57,6 +57,14 @@ class DictFragment : BaseFragment() {
     override fun onStop() {
         viewModel.stopJob()
         super.onStop()
+    }
+
+    override fun onActivityCreated() {
+        super.onActivityCreated()
+
+        Log.e("DictFragment", "onActivityCreated()")
+
+        viewModel.injectFromActivity(requireActivity())
     }
 
 }

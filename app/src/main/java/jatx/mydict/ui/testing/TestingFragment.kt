@@ -1,6 +1,7 @@
 package jatx.mydict.ui.testing
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,6 @@ class TestingFragment : BaseFragment() {
 
     private val viewModel: TestingViewModel by lazy {
         ViewModelProvider(this)[TestingViewModel::class.java].apply {
-            injectFromActivity(requireActivity())
             language = args.language
         }
     }
@@ -75,6 +75,14 @@ class TestingFragment : BaseFragment() {
     override fun onStop() {
         viewModel.stopJob()
         super.onStop()
+    }
+
+    override fun onActivityCreated() {
+        super.onActivityCreated()
+
+        Log.e("TestingFragment", "onActivityCreated()")
+
+        viewModel.injectFromActivity(requireActivity())
     }
 
 }

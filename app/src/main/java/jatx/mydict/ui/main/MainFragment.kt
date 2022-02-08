@@ -1,9 +1,11 @@
 package jatx.mydict.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import jatx.mydict.databinding.MainFragmentBinding
 import jatx.mydict.domain.Language
@@ -15,11 +17,7 @@ class MainFragment : BaseFragment() {
         fun newInstance() = MainFragment()
     }
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java].apply {
-            injectFromActivity(requireActivity())
-        }
-    }
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var mainFragmentBinding: MainFragmentBinding
 
@@ -52,6 +50,14 @@ class MainFragment : BaseFragment() {
         }
 
         return mainFragmentBinding.root
+    }
+
+    override fun onActivityCreated() {
+        super.onActivityCreated()
+
+        Log.e("MainFragment", "onActivityCreated()")
+
+        viewModel.injectFromActivity(requireActivity())
     }
 
 }

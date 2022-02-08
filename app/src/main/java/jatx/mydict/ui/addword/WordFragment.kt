@@ -1,6 +1,7 @@
 package jatx.mydict.ui.addword
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,6 @@ class WordFragment : BaseFragment() {
 
     private val viewModel: WordViewModel by lazy {
         ViewModelProvider(this)[WordViewModel::class.java].apply {
-            injectFromActivity(requireActivity())
             val screen = Json.decodeFromString(WordScreen.serializer(), args.wordScreenStr)
             wordScreen = screen
         }
@@ -68,6 +68,14 @@ class WordFragment : BaseFragment() {
         }
 
         return wordFragmentBinding.root
+    }
+
+    override fun onActivityCreated() {
+        super.onActivityCreated()
+
+        Log.e("WordFragment", "onActivityCreated()")
+
+        viewModel.injectFromActivity(requireActivity())
     }
 
 }
