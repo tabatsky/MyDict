@@ -78,7 +78,7 @@ class TestingViewModel : BaseViewModel() {
 
         val allWords = listOf(originals, translations)
 
-        val indices1 = range1.shuffled().sortedBy { wordList[it].correctAnswerCount } .subList(0, 4)
+        val indices1 = range1.shuffled().sortedBy { wordList[it].orderByValue } .subList(0, 4)
         val indices2 = range2.shuffled()
 
         val words1 = allWords[indices2[0]]
@@ -111,6 +111,7 @@ class TestingViewModel : BaseViewModel() {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     word.correctAnswerCount += 1
+                    word.orderByValue += 1
                     deps.wordRepository.editWord(word)
                 }
             }

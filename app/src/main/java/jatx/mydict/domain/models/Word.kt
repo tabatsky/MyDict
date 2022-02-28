@@ -11,5 +11,15 @@ data class Word(
     val translation: String,
     val language: Language,
     var correctAnswerCount: Int = 0,
-    var incorrectAnswerCount: Int = 0
-)
+    var incorrectAnswerCount: Int = 0,
+    var orderByValue: Int
+) {
+    override fun equals(other: Any?): Boolean {
+        return other is Word
+                && other.id ==id
+                && other.original == original
+                && other.comment == comment
+                && other.translation == translation
+                && other.language == language
+    }
+}

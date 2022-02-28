@@ -24,10 +24,12 @@ class DictViewModel : BaseViewModel() {
     private val _words = MutableLiveData<List<Word>>(listOf())
     val words: LiveData<List<Word>> = _words
 
+    private var initialOrderByValue: Int = 0
+
     private var collectJob: Job? = null
 
     fun addWord() {
-        navigator.navigateTo(AddWordScreen(language))
+        navigator.navigateTo(AddWordScreen(language, initialOrderByValue))
     }
 
     fun editWord(word: Word) {
@@ -51,6 +53,7 @@ class DictViewModel : BaseViewModel() {
                 deps.wordRepository.getAllByLanguage(language).collect {
                     withContext(Dispatchers.Main) {
                         _words.value = it
+                        initialOrderByValue = it.minOf { word -> word.orderByValue }
                     }
                 }
             }

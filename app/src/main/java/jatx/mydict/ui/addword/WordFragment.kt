@@ -44,7 +44,7 @@ class WordFragment : BaseFragment() {
                         val original = etOriginal.text.toString().trim()
                         val comment = etComment.text.toString().trim()
                         val translation = etTranslation.text.toString().trim()
-                        viewModel.addWord(original, comment, translation)
+                        viewModel.addWord(original, comment, translation, screen.initialOrderByValue)
                     }
                 }
                 is EditWordScreen -> {

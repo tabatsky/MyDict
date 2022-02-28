@@ -17,7 +17,7 @@ data class DictScreen(val language: Language): Screen()
 @Serializable
 sealed class WordScreen: Screen()
 @Serializable
-data class AddWordScreen(val language: Language): WordScreen()
+data class AddWordScreen(val language: Language, val initialOrderByValue: Int): WordScreen()
 @Serializable
 data class EditWordScreen(val word: Word): WordScreen()
 

@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 class WordViewModel : BaseViewModel() {
     lateinit var wordScreen: WordScreen
 
-    fun addWord(original: String, comment: String, translation: String) {
+    fun addWord(original: String, comment: String, translation: String, initialOrderByValue: Int) {
         val screen = wordScreen
         if (screen is AddWordScreen) {
             viewModelScope.launch {
@@ -23,7 +23,8 @@ class WordViewModel : BaseViewModel() {
                         original = original,
                         comment = comment,
                         translation = translation,
-                        language = screen.language
+                        language = screen.language,
+                        orderByValue = initialOrderByValue
                     )
                     deps.wordRepository.addWord(word)
                     withContext(Dispatchers.Main) {
@@ -44,7 +45,8 @@ class WordViewModel : BaseViewModel() {
                         original = original,
                         comment = comment,
                         translation = translation,
-                        language = screen.word.language
+                        language = screen.word.language,
+                        orderByValue = screen.word.orderByValue
                     )
                     deps.wordRepository.editWord(changedWord)
                     withContext(Dispatchers.Main) {
