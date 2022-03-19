@@ -19,16 +19,23 @@ class WordViewModel : BaseViewModel() {
         if (screen is AddWordScreen) {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
-                    val word = Word(
-                        original = original,
-                        comment = comment,
-                        translation = translation,
-                        language = screen.language,
-                        orderByValue = initialOrderByValue
-                    )
-                    deps.wordRepository.addWord(word)
-                    withContext(Dispatchers.Main) {
-                        navigator.back()
+                    val existingWord = deps.wordRepository.searchForWord(original, screen.language)
+                    existingWord?.let {
+                        withContext(Dispatchers.Main) {
+                            toasts.showToast(R.string.word_already_exists)
+                        }
+                    } ?: run {
+                        val newWord = Word(
+                            original = original,
+                            comment = comment,
+                            translation = translation,
+                            language = screen.language,
+                            orderByValue = initialOrderByValue
+                        )
+                        deps.wordRepository.addWord(newWord)
+                        withContext(Dispatchers.Main) {
+                            navigator.back()
+                        }
                     }
                 }
             }
@@ -40,17 +47,30 @@ class WordViewModel : BaseViewModel() {
         if (screen is EditWordScreen) {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
-                    val changedWord = Word(
-                        id = screen.word.id,
-                        original = original,
-                        comment = comment,
-                        translation = translation,
-                        language = screen.word.language,
-                        orderByValue = screen.word.orderByValue
-                    )
-                    deps.wordRepository.editWord(changedWord)
-                    withContext(Dispatchers.Main) {
-                        navigator.back()
+                    val existingWord =
+                        if (original != screen.word.original)
+                            deps.wordRepository.searchForWord(original, screen.word.language)
+                        else
+                            null
+                    existingWord?.let {
+                        withContext(Dispatchers.Main) {
+                            toasts.showToast(R.string.word_already_exists)
+                        }
+                    } ?: run {
+                        val changedWord = Word(
+                            id = screen.word.id,
+                            original = original,
+                            comment = comment,
+                            translation = translation,
+                            language = screen.word.language,
+                            correctAnswerCount = screen.word.correctAnswerCount,
+                            incorrectAnswerCount = screen.word.incorrectAnswerCount,
+                            orderByValue = screen.word.orderByValue
+                        )
+                        deps.wordRepository.editWord(changedWord)
+                        withContext(Dispatchers.Main) {
+                            navigator.back()
+                        }
                     }
                 }
             }

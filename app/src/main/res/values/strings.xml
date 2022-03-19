@@ -24,4 +24,5 @@
     <string name="toast_minimum_word_count">В словаре должно быть хотя бы 4 слова</string>
     <string name="btn_testing">Тестирование</string>
     <string name="btn_next_question">Дальше</string>
+    <string name="word_already_exists">Слово уже есть в словаре</string>
 </resources>

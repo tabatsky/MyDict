@@ -39,6 +39,17 @@ class WordRepositoryImpl(private val appDatabase: AppDatabase): WordRepository {
         .wordDao()
         .insertReplaceList(list.map { it.toEntity() })
 
+    override suspend fun searchForWord(original: String, language: Language): Word? {
+        val list = appDatabase
+            .wordDao()
+            .searchForWord(original, language.dbString)
+        return if (list.isEmpty()) {
+            null
+        } else {
+            list[0].toModel()
+        }
+    }
+
     override suspend fun addWord(word: Word) = appDatabase
         .wordDao()
         .addWord(word.toEntity())

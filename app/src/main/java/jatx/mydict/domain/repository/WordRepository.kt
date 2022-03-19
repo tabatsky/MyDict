@@ -10,6 +10,7 @@ interface WordRepository {
     suspend fun getCountByLanguage(language: Language): Int
     suspend fun getAll(): List<Word>
     suspend fun insertReplaceList(list: List<Word>)
+    suspend fun searchForWord(original: String, language: Language): Word?
     suspend fun addWord(word: Word)
     suspend fun editWord(word: Word)
     suspend fun deleteWord(word: Word)

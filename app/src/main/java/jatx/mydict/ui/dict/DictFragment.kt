@@ -39,6 +39,14 @@ class DictFragment : BaseFragment() {
             viewModel.openTesting()
         }
 
+        dictFragmentBinding.tvOriginalHeader.setOnClickListener {
+            viewModel.sortByOriginal()
+        }
+
+        dictFragmentBinding.tvTranslationHeader.setOnClickListener {
+            viewModel.sortByTranslation()
+        }
+
         dictFragmentBinding.rvWords.adapter = adapter
         dictFragmentBinding.rvWords.layoutManager = LinearLayoutManager(requireContext())
 
@@ -47,7 +55,7 @@ class DictFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.startJob()
+        viewModel.startJob(true)
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.updateWords(it)
         }

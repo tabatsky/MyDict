@@ -47,12 +47,18 @@ class DictViewModel : BaseViewModel() {
         }
     }
 
-    fun startJob() {
+    fun startJob(sortByOriginal: Boolean) {
         collectJob = viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 deps.wordRepository.getAllByLanguage(language).collect {
                     withContext(Dispatchers.Main) {
-                        _words.value = it
+                        _words.value = it.sortedBy {
+                            if (sortByOriginal) {
+                                it.original
+                            } else {
+                                it.translation
+                            }
+                        }
                         initialOrderByValue = it.minOf { word -> word.orderByValue }
                     }
                 }
@@ -64,5 +70,15 @@ class DictViewModel : BaseViewModel() {
         collectJob?.let {
             if (!it.isCancelled) it.cancel()
         }
+    }
+
+    fun sortByOriginal() {
+        stopJob()
+        startJob(true)
+    }
+
+    fun sortByTranslation() {
+        stopJob()
+        startJob(false)
     }
 }

@@ -24,6 +24,9 @@ interface WordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReplaceList(list: List<WordEntity>)
 
+    @Query("SELECT * FROM words WHERE original=:original AND language=:language")
+    suspend fun searchForWord(original: String, language: String): List<WordEntity>
+
     @Insert
     suspend fun addWord(wordEntity: WordEntity)
 
