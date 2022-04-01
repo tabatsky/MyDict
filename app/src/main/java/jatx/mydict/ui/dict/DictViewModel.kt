@@ -28,6 +28,8 @@ class DictViewModel : BaseViewModel() {
 
     private var collectJob: Job? = null
 
+    var isSortByOriginal = true
+
     fun addWord() {
         navigator.navigateTo(AddWordScreen(language, initialOrderByValue))
     }
@@ -47,13 +49,13 @@ class DictViewModel : BaseViewModel() {
         }
     }
 
-    fun startJob(sortByOriginal: Boolean) {
+    fun startJob() {
         collectJob = viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 deps.wordRepository.getAllByLanguage(language).collect {
                     withContext(Dispatchers.Main) {
                         _words.value = it.sortedBy {
-                            if (sortByOriginal) {
+                            if (isSortByOriginal) {
                                 it.original
                             } else {
                                 it.translation
@@ -74,11 +76,13 @@ class DictViewModel : BaseViewModel() {
 
     fun sortByOriginal() {
         stopJob()
-        startJob(true)
+        isSortByOriginal = true
+        startJob()
     }
 
     fun sortByTranslation() {
         stopJob()
-        startJob(false)
+        isSortByOriginal = false
+        startJob()
     }
 }

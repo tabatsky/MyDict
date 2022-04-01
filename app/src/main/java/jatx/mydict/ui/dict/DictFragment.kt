@@ -55,7 +55,7 @@ class DictFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.startJob(true)
+        viewModel.startJob()
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.updateWords(it)
         }
