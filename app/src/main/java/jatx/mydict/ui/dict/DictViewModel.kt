@@ -61,7 +61,7 @@ class DictViewModel : BaseViewModel() {
                                 it.translation
                             }
                         }
-                        initialOrderByValue = it.minOf { word -> word.orderByValue }
+                        initialOrderByValue = it.minOfOrNull { word -> word.orderByValue } ?: 0
                     }
                 }
             }

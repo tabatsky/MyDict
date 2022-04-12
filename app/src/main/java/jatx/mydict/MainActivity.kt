@@ -14,21 +14,25 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.gson.Gson
 import jatx.mydict.contracts.*
-import jatx.mydict.data.db.AppDatabase
-import jatx.mydict.data.db.repository.WordRepositoryImpl
 import jatx.mydict.ui.dict.DictFragmentDirections
 import jatx.mydict.ui.main.MainFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.generic.instance
 import java.io.File
 import java.io.PrintWriter
 import java.util.*
 
-class MainActivity : AppCompatActivity(), Navigator, Deps, Backup, Toasts, Dialogs {
+class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, KodeinAware {
 
     private lateinit var navController: NavController
+
+    override val kodein by closestKodein()
+    private val deps by instance<Deps>()
 
     private val loadLauncher =
         registerForActivityResult(
@@ -104,10 +108,6 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backup, Toasts, Dialo
         back()
     }
 
-    override val wordRepository by lazy {
-        WordRepositoryImpl(AppDatabase.invoke(applicationContext))
-    }
-
     override fun loadData() = loadLauncher.launch(
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backup, Toasts, Dialo
                     sc.close()
                     val backupData = Gson().fromJson(backupDataStr, BackupData::class.java)
                     Log.e("backup", backupData.toString())
-                    wordRepository.insertReplaceList(backupData.words)
+                    deps.wordRepository.insertReplaceList(backupData.words)
                     withContext(Dispatchers.Main) {
                         showToast(getString(R.string.toast_load_data_success))
                     }
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), Navigator, Deps, Backup, Toasts, Dialo
     private fun onSavePermissionGranted() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                val words = wordRepository.getAll()
+                val words = deps.wordRepository.getAll()
                 val backupData = BackupData(words)
                 val backupDataStr = Gson().toJson(backupData)
                 Log.e("backup", backupDataStr)
