@@ -11,7 +11,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
 
 class App: Application(), KodeinAware {
-    override val kodein by Kodein.lazy {
+    override val kodein = Kodein {
         bind<Deps>() with singleton {
             DepsImpl(this@App)
         }
