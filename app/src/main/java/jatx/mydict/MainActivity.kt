@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Ko
 
     override fun back() {
         Log.e("navigator", "back")
-        if (navController.graph.startDestination == navController.currentDestination?.id) {
+        if (navController.graph.startDestinationId == navController.currentDestination?.id) {
             finish()
         } else {
             navController.popBackStack()
