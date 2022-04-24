@@ -28,7 +28,7 @@ class DictFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         dictFragmentBinding = DictFragmentBinding.inflate(inflater, container, false)
 
         dictFragmentBinding.btnAddWord.setOnClickListener {

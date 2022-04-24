@@ -30,7 +30,7 @@ class WordFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         wordFragmentBinding = WordFragmentBinding.inflate(inflater, container, false)
 
         with(wordFragmentBinding) {

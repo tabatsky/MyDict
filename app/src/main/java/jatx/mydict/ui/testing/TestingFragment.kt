@@ -28,7 +28,7 @@ class TestingFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         testingFragmentBinding = TestingFragmentBinding.inflate(inflater, container, false)
 
         with(testingFragmentBinding) {
@@ -45,18 +45,18 @@ class TestingFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         viewModel.currentQuestion.observe(viewLifecycleOwner) { currentQuestion ->
-            currentQuestion?.let { currentQuestion ->
-                testingFragmentBinding.tvQuestion.text = currentQuestion.question
-                currentQuestion.answers.forEachIndexed { index, s ->
+            currentQuestion?.let { current ->
+                testingFragmentBinding.tvQuestion.text = current.question
+                current.answers.forEachIndexed { index, s ->
                     allTV[index].setBackgroundResource(R.color.blue)
                     allTV[index].text = s
                     allTV[index].setOnClickListener {
-                        if (index == currentQuestion.correctIndex) {
+                        if (index == current.correctIndex) {
                             allTV[index].setBackgroundResource(R.color.green)
                             viewModel.correctAnswer()
                         } else {
                             allTV[index].setBackgroundResource(R.color.red)
-                            allTV[currentQuestion.correctIndex].setBackgroundResource(R.color.green)
+                            allTV[current.correctIndex].setBackgroundResource(R.color.green)
                             viewModel.incorrectAnswer()
                         }
 

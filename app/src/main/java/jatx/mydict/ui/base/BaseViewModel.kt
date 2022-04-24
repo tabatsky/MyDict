@@ -1,5 +1,6 @@
 package jatx.mydict.ui.base
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -9,11 +10,12 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 
 open class BaseViewModel: ViewModel(), KodeinAware {
+    @SuppressLint("StaticFieldLeak")
     private var activity: Activity? = null
 
     override val kodein by lazy {
-        val _kodein by closestKodein(activity ?: throw IllegalStateException("Cannot init kodein"))
-        _kodein
+        val tmpKodein by closestKodein(activity ?: throw IllegalStateException("Cannot init kodein"))
+        tmpKodein
     }
 
     val navigator: Navigator
