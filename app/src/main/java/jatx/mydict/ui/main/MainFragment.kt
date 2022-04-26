@@ -13,10 +13,6 @@ import jatx.mydict.ui.base.BaseFragment
 
 class MainFragment : BaseFragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var mainFragmentBinding: MainFragmentBinding
@@ -50,14 +46,6 @@ class MainFragment : BaseFragment() {
         }
 
         return mainFragmentBinding.root
-    }
-
-    override fun onActivityCreated() {
-        super.onActivityCreated()
-
-        Log.e("MainFragment", "onActivityCreated()")
-
-        viewModel.injectFromActivity(requireActivity())
     }
 
 }

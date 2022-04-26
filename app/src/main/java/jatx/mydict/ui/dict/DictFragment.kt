@@ -67,12 +67,4 @@ class DictFragment : BaseFragment() {
         super.onStop()
     }
 
-    override fun onActivityCreated() {
-        super.onActivityCreated()
-
-        Log.e("DictFragment", "onActivityCreated()")
-
-        viewModel.injectFromActivity(requireActivity())
-    }
-
 }

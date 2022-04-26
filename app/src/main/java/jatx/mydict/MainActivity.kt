@@ -20,19 +20,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
-import org.kodein.di.generic.instance
+import org.koin.android.ext.android.inject
 import java.io.File
 import java.io.PrintWriter
 import java.util.*
 
-class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, KodeinAware {
+class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
 
     private lateinit var navController: NavController
 
-    override val kodein by closestKodein()
-    private val deps by instance<Deps>()
+    private val deps: Deps by inject()
+
+    private val activityProvider: ActivityProvider by inject()
 
     private val loadLauncher =
         registerForActivityResult(
@@ -61,6 +60,16 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Ko
         navController = navHost.navController
 
         setupActionBarWithNavController(navController)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        activityProvider.currentActivity = this
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activityProvider.currentActivity = null
     }
 
     override fun navigateTo(screen: Screen) {

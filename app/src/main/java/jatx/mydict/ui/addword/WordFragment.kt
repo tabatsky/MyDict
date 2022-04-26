@@ -70,12 +70,4 @@ class WordFragment : BaseFragment() {
         return wordFragmentBinding.root
     }
 
-    override fun onActivityCreated() {
-        super.onActivityCreated()
-
-        Log.e("WordFragment", "onActivityCreated()")
-
-        viewModel.injectFromActivity(requireActivity())
-    }
-
 }

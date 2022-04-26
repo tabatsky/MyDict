@@ -77,12 +77,4 @@ class TestingFragment : BaseFragment() {
         super.onStop()
     }
 
-    override fun onActivityCreated() {
-        super.onActivityCreated()
-
-        Log.e("TestingFragment", "onActivityCreated()")
-
-        viewModel.injectFromActivity(requireActivity())
-    }
-
 }

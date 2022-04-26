@@ -1,27 +1,20 @@
 package jatx.mydict.ui.base
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import jatx.mydict.ActivityProvider
 import jatx.mydict.contracts.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
-import org.kodein.di.generic.instance
+import org.koin.java.KoinJavaComponent.inject
 
-open class BaseViewModel: ViewModel(), KodeinAware {
-    @SuppressLint("StaticFieldLeak")
-    private var activity: Activity? = null
+open class BaseViewModel: ViewModel() {
+    private val activityProvider: ActivityProvider by inject(ActivityProvider::class.java)
+    private val activity: Activity?
+        get() = activityProvider.currentActivity
 
-    override val kodein by lazy {
-        val tmpKodein by closestKodein(activity ?: throw IllegalStateException("Cannot init kodein"))
-        tmpKodein
-    }
+    val deps: Deps by inject(Deps::class.java)
 
     val navigator: Navigator
         get() = activity as? Navigator ?: throw IllegalStateException()
-
-    val deps by instance<Deps>()
 
     val backup: Backup
         get() = activity as? Backup ?: throw IllegalStateException()
@@ -31,17 +24,4 @@ open class BaseViewModel: ViewModel(), KodeinAware {
 
     val dialogs: Dialogs
         get() = activity as? Dialogs ?: throw IllegalStateException()
-
-
-    fun injectFromActivity(activity: Activity) {
-        this.activity = activity
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-
-        activity = null
-
-        Log.e("BaseViewModel", "onCleared()")
-    }
 }
