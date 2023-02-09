@@ -28,19 +28,14 @@ class DictAdapter: ListAdapter<DictAdapter.WordWithPosition, DictAdapter.VH>(Wor
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val word = getItem(position)
-        holder.bindTo(position, word)
+        holder.bindTo(word)
     }
 
     inner class VH(private val v: View): RecyclerView.ViewHolder(v) {
         private val binding = ItemDictBinding.bind(v)
 
-        fun bindTo(position: Int, wordWithPosition: WordWithPosition) {
-            with (binding) {
-                with (wordWithPosition) {
-                    tvOriginal.text = "${position + 1}. ${word.original}"
-                    tvTranslation.text = word.translation
-                }
-            }
+        fun bindTo(wordWithPosition: WordWithPosition) {
+            binding.wordWithPosition = wordWithPosition
             v.setOnClickListener {
                 onWordClick(wordWithPosition.word)
             }
@@ -59,5 +54,8 @@ class DictAdapter: ListAdapter<DictAdapter.WordWithPosition, DictAdapter.VH>(Wor
     data class WordWithPosition(
         val position: Int,
         val word: Word
-    )
+    ) {
+        val originalWithPosition =  "${position + 1}. ${word.original}"
+        val translation = word.translation
+    }
 }

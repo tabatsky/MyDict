@@ -1,13 +1,11 @@
 package jatx.mydict.ui.dict
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import jatx.mydict.databinding.DictFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
 
@@ -31,24 +29,10 @@ class DictFragment : BaseFragment() {
     ): View {
         dictFragmentBinding = DictFragmentBinding.inflate(inflater, container, false)
 
-        dictFragmentBinding.btnAddWord.setOnClickListener {
-            viewModel.addWord()
-        }
-
-        dictFragmentBinding.btnTesting.setOnClickListener {
-            viewModel.openTesting()
-        }
-
-        dictFragmentBinding.tvOriginalHeader.setOnClickListener {
-            viewModel.sortByOriginal()
-        }
-
-        dictFragmentBinding.tvTranslationHeader.setOnClickListener {
-            viewModel.sortByTranslation()
-        }
+        dictFragmentBinding.lifecycleOwner = this
+        dictFragmentBinding.viewmodel = viewModel
 
         dictFragmentBinding.rvWords.adapter = adapter
-        dictFragmentBinding.rvWords.layoutManager = LinearLayoutManager(requireContext())
 
         return dictFragmentBinding.root
     }
@@ -56,9 +40,6 @@ class DictFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         viewModel.startJob()
-        viewModel.words.observe(viewLifecycleOwner) {
-            adapter.updateWords(it)
-        }
         adapter.onWordClick = { viewModel.editWord(it) }
     }
 

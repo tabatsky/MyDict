@@ -1,62 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/black"/>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="wordWithPosition"
+            type="jatx.mydict.ui.dict.DictAdapter.WordWithPosition" />
+    </data>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <View
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
                 android:background="@color/black"/>
 
-            <TextView
-                android:id="@+id/tv_original"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:gravity="start|center_vertical"
-                android:paddingStart="4dp"
-                android:background="@color/yellow"
-                android:textColor="@color/black"
-                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tv_original"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="4dp"
+                    android:background="@color/yellow"
+                    android:textColor="@color/black"
+                    android:text="@{wordWithPosition.originalWithPosition}"
+                    />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tv_translation"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="4dp"
+                    android:background="@color/blue"
+                    android:textColor="@color/black"
+                    android:text="@{wordWithPosition.translation}"
+                    />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"/>
+            </LinearLayout>
 
             <View
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="@color/black"/>
-
-            <TextView
-                android:id="@+id/tv_translation"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="match_parent"
-                android:gravity="start|center_vertical"
-                android:paddingStart="4dp"
-                android:background="@color/blue"
-                android:textColor="@color/black"
-                />
-
-            <View
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
                 android:background="@color/black"/>
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/black"/>
-    </LinearLayout>
-</FrameLayout>
+    </FrameLayout>
+</layout>
