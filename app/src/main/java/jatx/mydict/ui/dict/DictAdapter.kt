@@ -44,7 +44,7 @@ class DictAdapter: ListAdapter<DictAdapter.WordWithPosition, DictAdapter.VH>(Wor
 
     class WordDiffUtil: DiffUtil.ItemCallback<WordWithPosition>() {
         override fun areItemsTheSame(oldItem: WordWithPosition, newItem: WordWithPosition) =
-            (oldItem == newItem)
+            (oldItem.word.original == newItem.word.original)
 
         override fun areContentsTheSame(oldItem: WordWithPosition, newItem: WordWithPosition) =
             (oldItem == newItem)

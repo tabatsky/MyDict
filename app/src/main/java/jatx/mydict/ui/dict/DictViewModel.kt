@@ -2,6 +2,7 @@ package jatx.mydict.ui.dict
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import jatx.mydict.R
 import jatx.mydict.contracts.AddWordScreen
@@ -12,7 +13,7 @@ import jatx.mydict.domain.models.Word
 import jatx.mydict.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -23,6 +24,8 @@ class DictViewModel : BaseViewModel() {
 
     private val _words = MutableLiveData<List<Word>>(listOf())
     val words: LiveData<List<Word>> = _words
+
+    val searchText = MutableLiveData("")
 
     private var initialOrderByValue: Int = 0
 
@@ -50,20 +53,27 @@ class DictViewModel : BaseViewModel() {
     }
 
     fun startJob() {
+        val searchTextFlow = searchText.asFlow()
         collectJob = viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                deps.wordRepository.getAllByLanguage(language).collect {
-                    withContext(Dispatchers.Main) {
-                        _words.value = it.sortedBy {
-                            if (isSortByOriginal) {
-                                it.original
-                            } else {
-                                it.translation
-                            }
+                deps.wordRepository.getAllByLanguage(language)
+                    .combine(searchTextFlow) { words, searchTextString ->
+                        words.filter {
+                            it.original.lowercase()
+                                .contains(searchTextString.lowercase())
                         }
-                        initialOrderByValue = it.minOfOrNull { word -> word.orderByValue } ?: 0
+                    }.collect {
+                        withContext(Dispatchers.Main) {
+                            _words.value = it.sortedBy {
+                                if (isSortByOriginal) {
+                                    it.original
+                                } else {
+                                    it.translation
+                                }
+                            }
+                            initialOrderByValue = it.minOfOrNull { word -> word.orderByValue } ?: 0
+                        }
                     }
-                }
             }
         }
     }

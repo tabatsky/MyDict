@@ -27,6 +27,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:text="@={viewmodel.searchText}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
