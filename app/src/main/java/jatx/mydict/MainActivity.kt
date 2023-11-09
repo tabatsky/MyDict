@@ -2,6 +2,7 @@ package jatx.mydict
 
 import android.Manifest
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -119,12 +120,24 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
     }
 
     override fun loadData() = loadLauncher.launch(arrayOf("*/*"))
-    override fun saveData() = saveLauncher.launch(
-        arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-    )
+    override fun saveData() {
+        if (Build.VERSION.SDK_INT <= 29) {
+            saveLauncher.launch(
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            )
+        } else if (Build.VERSION.SDK_INT <= 32) {
+            saveLauncher.launch(
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            )
+        } else {
+            onSavePermissionGranted()
+        }
+    }
 
     private fun onLoadFromUri(uri: Uri) {
         lifecycleScope.launch {
