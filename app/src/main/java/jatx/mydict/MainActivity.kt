@@ -1,6 +1,7 @@
 package jatx.mydict
 
 import android.Manifest
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -35,10 +36,10 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
 
     private val loadLauncher =
         registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
+            ActivityResultContracts.OpenDocument()
         ) {
-            if (it) {
-                onLoadPermissionGranted()
+            it?.let { uri ->
+                onLoadFromUri(uri)
             }
         }
 
@@ -117,10 +118,7 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
         back()
     }
 
-    override fun loadData() = loadLauncher.launch(
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    )
-
+    override fun loadData() = loadLauncher.launch(arrayOf("*/*"))
     override fun saveData() = saveLauncher.launch(
         arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -128,16 +126,11 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
         )
     )
 
-    private fun onLoadPermissionGranted() {
+    private fun onLoadFromUri(uri: Uri) {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val inFile = File(
-                        Environment
-                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                        "MyDict.json"
-                    )
-                    val sc = Scanner(inFile)
+                    val sc = Scanner(contentResolver.openInputStream(uri))
                     val backupDataStr = sc.nextLine()
                     sc.close()
                     val backupData = Gson().fromJson(backupDataStr, BackupData::class.java)
