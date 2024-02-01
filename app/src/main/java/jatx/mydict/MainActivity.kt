@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
                     val dir = Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
                     dir.mkdirs()
-                    val outFile = File(dir, "MyDict.json")
+                    val outFile = File(dir, "MyDict.json.txt")
                     val pw = PrintWriter(outFile)
                     pw.println(backupDataStr)
                     pw.flush()
