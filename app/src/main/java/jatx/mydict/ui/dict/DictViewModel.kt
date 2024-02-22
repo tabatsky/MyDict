@@ -67,6 +67,9 @@ class DictViewModel : BaseViewModel() {
                             _words.value = it.sortedBy {
                                 if (isSortByOriginal) {
                                     it.original
+                                        .replace("der ", "", ignoreCase = true)
+                                        .replace("die ", "", ignoreCase = true)
+                                        .replace("das ", "", ignoreCase = true)
                                 } else {
                                     it.translation
                                 }
