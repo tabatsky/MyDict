@@ -22,3 +22,5 @@ data class AddWordScreen(val language: Language, val initialOrderByValue: Int): 
 data class EditWordScreen(val word: Word): WordScreen()
 
 data class TestingScreen(val language: Language): Screen()
+
+object AuthScreen: Screen()

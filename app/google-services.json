@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "103060766685",
+    "project_id": "mydict-509a5",
+    "storage_bucket": "mydict-509a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103060766685:android:76cb3378220e57bc480034",
+        "android_client_info": {
+          "package_name": "jatx.mydict"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtPjjkzu7gxzrz0DyL2xVV0b7dUTUCir4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

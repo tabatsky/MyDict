@@ -36,6 +36,10 @@ class MainFragment : BaseFragment() {
                 viewModel.selectLanguage(Language.JAPANESE)
             }
 
+            btnAuth.setOnClickListener {
+                viewModel.auth()
+            }
+
             btnLoadData.setOnClickListener {
                 viewModel.loadData()
             }

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_dictFragment"
             app:destination="@id/dictFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_authFragment"
+            app:destination="@id/authFragment" />
     </fragment>
     <fragment
         android:id="@+id/dictFragment"
@@ -52,6 +55,15 @@
         <argument
             android:name="language"
             app:argType="jatx.mydict.domain.Language" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="jatx.mydict.ui.auth.AuthFragment"
+        android:label="{title}"
+        tools:layout="@layout/auth_fragment">
         <argument
             android:name="title"
             app:argType="string" />

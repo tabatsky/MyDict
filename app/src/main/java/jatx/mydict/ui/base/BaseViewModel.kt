@@ -24,4 +24,7 @@ open class BaseViewModel: ViewModel() {
 
     val dialogs: Dialogs
         get() = activity as? Dialogs ?: throw IllegalStateException()
+
+    val auth: Auth
+        get() = activity as? Auth ?: throw IllegalStateException()
 }

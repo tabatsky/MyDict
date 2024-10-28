@@ -9,6 +9,7 @@
     <string name="hint_translation">Перевод:</string>
     <string name="title_add_word">Добавить слово</string>
     <string name="title_edit_word">Изменить слово</string>
+    <string name="title_auth">Авторизация</string>
     <string name="btn_save">Сохранить</string>
     <string name="btn_delete">Удалить</string>
     <string name="btn_save_data">Выгрузить</string>
@@ -25,4 +26,8 @@
     <string name="btn_testing">Тестирование</string>
     <string name="btn_next_question">Дальше</string>
     <string name="word_already_exists">Слово уже есть в словаре</string>
+    <string name="btn_auth">Авторизация</string>
+    <string name="btn_save_auth">Сохранить</string>
+    <string name="btn_sign_in">Войти</string>
+    <string name="btn_sign_up">Зарегистрироваться</string>
 </resources>

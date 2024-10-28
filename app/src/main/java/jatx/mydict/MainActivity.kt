@@ -14,6 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import jatx.mydict.contracts.*
 import jatx.mydict.ui.dict.DictFragmentDirections
@@ -27,13 +31,16 @@ import java.io.File
 import java.io.PrintWriter
 import java.util.*
 
-class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
+class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Auth {
 
     private lateinit var navController: NavController
 
     private val deps: Deps by inject()
 
     private val activityProvider: ActivityProvider by inject()
+
+    private lateinit var auth: FirebaseAuth
+    private var theUser: FirebaseUser? = null
 
     private val loadLauncher =
         registerForActivityResult(
@@ -62,6 +69,13 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
         navController = navHost.navController
 
         setupActionBarWithNavController(navController)
+
+        auth = Firebase.auth
+        loadAuth { email, password ->
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                signIn(email, password)
+            }
+        }
     }
 
     override fun onStart() {
@@ -97,6 +111,10 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
                 val title = getString(R.string.title_testing) + screen.language.rusString
                 val action = DictFragmentDirections.actionDictFragmentToTestingFragment(screen.language, title)
                 navController.navigate(action)
+            }
+            is AuthScreen -> {
+                val title = getString(R.string.title_auth)
+                navController.navigate(MainFragmentDirections.actionMainFragmentToAuthFragment(title))
             }
         }
     }
@@ -214,5 +232,59 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs {
 
     override fun showConfirmDialog(msgResId: Int, onConfirm: () -> Unit) =
         showConfirmDialog(getString(msgResId), onConfirm)
+
+    override val user: FirebaseUser?
+        get() = theUser
+
+    override fun loadAuth(onSuccess: (String, String) -> Unit) {
+        val sp = getSharedPreferences("MyDict", 0)
+        val login = sp.getString("email", "")!!
+        val password = sp.getString("password", "")!!
+        onSuccess(login, password)
+    }
+
+    override fun saveAuth(email: String, password: String) {
+        val sp = getSharedPreferences("MyDict", 0)
+        val editor = sp.edit()
+        editor.putString("email", email)
+        editor.putString("password", password)
+        editor.apply()
+    }
+
+    override fun signIn(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    Log.e("user", user?.uid.toString())
+                    saveAuth(email, password)
+                    showToast("Sign in success")
+                    theUser = user
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.e("sign in", "signInWithEmail:failure", task.exception)
+                    showToast("Sign in failed")
+                }
+            }
+    }
+
+    override fun signUp(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    Log.e("user", user?.uid.toString())
+                    showToast("Sign up success")
+                    saveAuth(email, password)
+                    theUser = user
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.e("sign up", "createUserWithEmail:failure", task.exception)
+                    showToast("Sign up failed")
+                }
+            }
+    }
 
 }
