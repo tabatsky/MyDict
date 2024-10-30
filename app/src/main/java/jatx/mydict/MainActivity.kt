@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import jatx.mydict.contracts.*
@@ -41,6 +42,8 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
 
     private lateinit var auth: FirebaseAuth
     private var theUser: FirebaseUser? = null
+
+    val db = Firebase.firestore
 
     private val loadLauncher =
         registerForActivityResult(
@@ -154,6 +157,70 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
             )
         } else {
             onSavePermissionGranted()
+        }
+    }
+
+    override fun loadDataFromFirestore() {
+        user?.let { theUser ->
+            val userUid = theUser.uid
+
+            db.collection("backups")
+                .document(userUid)
+                .get()
+                .addOnSuccessListener { document ->
+                    document?.let {
+                        Log.e("load", "${document.id} => ${document.data}")
+                        (document.data?.get("backupDataStr") as? String)?.let { backupDataStr ->
+                            val backupData = Gson().fromJson(backupDataStr, BackupData::class.java)
+                            Log.e("backup", backupData.toString())
+                            lifecycleScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    deps.wordRepository.insertReplaceList(backupData.words)
+                                }
+                                withContext(Dispatchers.Main) {
+                                    showToast("Load success")
+                                }
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("load", "error", exception)
+                    showToast("Load error")
+                }
+        } ?: run {
+            showToast("Need to login")
+        }
+    }
+
+    override fun saveDataToFirestore() {
+        user?.let { theUser ->
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    val words = deps.wordRepository.getAll()
+                    val backupData = BackupData(words)
+                    val backupDataStr = Gson().toJson(backupData)
+                    val userUid = theUser.uid
+
+                    val doc = hashMapOf(
+                        "backupDataStr" to backupDataStr
+                    )
+
+                    db.collection("backups")
+                        .document(userUid)
+                        .set(doc)
+                        .addOnSuccessListener {
+                            Log.e("save", "success")
+                            showToast("Save success")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w("save", "error", e)
+                            showToast("Save error")
+                        }
+                }
+            }
+        } ?: run {
+            showToast("Need to login")
         }
     }
 

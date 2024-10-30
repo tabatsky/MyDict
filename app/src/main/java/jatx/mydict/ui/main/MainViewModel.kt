@@ -15,4 +15,8 @@ class MainViewModel : BaseViewModel() {
     fun loadData() = backup.loadData()
 
     fun saveData() = backup.saveData()
+
+    fun loadDataFromFirestore() = backup.loadDataFromFirestore()
+
+    fun saveDataToFirestore() = backup.saveDataToFirestore()
 }
