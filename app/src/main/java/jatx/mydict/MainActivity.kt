@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                                     deps.wordRepository.insertReplaceList(backupData.words)
                                 }
                                 withContext(Dispatchers.Main) {
-                                    showToast("Load success")
+                                    showToast(R.string.toast_load_data_success)
                                 }
                             }
                         }
@@ -186,10 +186,10 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                 }
                 .addOnFailureListener { exception ->
                     Log.e("load", "error", exception)
-                    showToast("Load error")
+                    showToast(R.string.toast_some_error)
                 }
         } ?: run {
-            showToast("Need to login")
+            showToast(R.string.toast_need_login)
         }
     }
 
@@ -211,16 +211,16 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                         .set(doc)
                         .addOnSuccessListener {
                             Log.e("save", "success")
-                            showToast("Save success")
+                            showToast(R.string.toast_save_data_success)
                         }
                         .addOnFailureListener { e ->
                             Log.w("save", "error", e)
-                            showToast("Save error")
+                            showToast(R.string.toast_some_error)
                         }
                 }
             }
         } ?: run {
-            showToast("Need to login")
+            showToast(R.string.toast_need_login)
         }
     }
 
@@ -235,12 +235,12 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                     Log.e("backup", backupData.toString())
                     deps.wordRepository.insertReplaceList(backupData.words)
                     withContext(Dispatchers.Main) {
-                        showToast(getString(R.string.toast_load_data_success))
+                        showToast(R.string.toast_load_data_success)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                     withContext(Dispatchers.Main) {
-                        showToast(getString(R.string.toast_some_error))
+                        showToast(R.string.toast_some_error)
                     }
                 }
             }
@@ -265,12 +265,12 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                     pw.flush()
                     pw.close()
                     withContext(Dispatchers.Main) {
-                        showToast(getString(R.string.toast_save_data_success))
+                        showToast(R.string.toast_save_data_success)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                     withContext(Dispatchers.Main) {
-                        showToast(getString(R.string.toast_some_error))
+                        showToast(R.string.toast_some_error)
                     }
                 }
             }
@@ -326,12 +326,12 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                     val user = auth.currentUser
                     Log.e("user", user?.uid.toString())
                     saveAuth(email, password)
-                    showToast("Sign in success")
+                    showToast(R.string.toast_sign_in_success)
                     theUser = user
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.e("sign in", "signInWithEmail:failure", task.exception)
-                    showToast("Sign in failed")
+                    showToast(R.string.toast_sign_in_error)
                 }
             }
     }
@@ -343,13 +343,13 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
                     Log.e("user", user?.uid.toString())
-                    showToast("Sign up success")
+                    showToast(R.string.toast_sign_up_success)
                     saveAuth(email, password)
                     theUser = user
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.e("sign up", "createUserWithEmail:failure", task.exception)
-                    showToast("Sign up failed")
+                    showToast(R.string.toast_sign_up_error)
                 }
             }
     }
