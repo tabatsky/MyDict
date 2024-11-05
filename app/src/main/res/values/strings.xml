@@ -37,4 +37,6 @@
     <string name="toast_sign_in_error">Ошибка авторизации</string>
     <string name="toast_sign_up_success">Регистрация успешна</string>
     <string name="toast_sign_up_error">Ошибка регистрации</string>
+    <string name="hint_e_mail">E-mail</string>
+    <string name="hint_password">Пароль</string>
 </resources>
