@@ -130,4 +130,7 @@ class TestingViewModel : BaseViewModel() {
             }
         }
     }
+
+    fun speak(text: String, language: Language, isForeign: Boolean) =
+        speaker.speak(text, language, isForeign)
 }

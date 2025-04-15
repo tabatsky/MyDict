@@ -1,10 +1,10 @@
 package jatx.mydict.ui.testing
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -24,6 +24,7 @@ class TestingFragment : BaseFragment() {
 
     private lateinit var testingFragmentBinding: TestingFragmentBinding
     private lateinit var allTV: List<TextView>
+    private lateinit var allIV: List<ImageView>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +34,7 @@ class TestingFragment : BaseFragment() {
 
         with(testingFragmentBinding) {
             allTV = listOf(tvAnswer1, tvAnswer2, tvAnswer3, tvAnswer4)
+            allIV = listOf(ivAnswer1, ivAnswer2, ivAnswer3, ivAnswer4)
 
             btnNextQuestion.setOnClickListener {
                 viewModel.showNext()
@@ -47,6 +49,9 @@ class TestingFragment : BaseFragment() {
         viewModel.currentQuestion.observe(viewLifecycleOwner) { currentQuestion ->
             currentQuestion?.let { current ->
                 testingFragmentBinding.tvQuestion.text = current.question
+                testingFragmentBinding.ivQuestion.setOnClickListener {
+                    viewModel.speak(current.question, current.questionWord.language, current.foreignToRussian)
+                }
                 current.answers.forEachIndexed { index, s ->
                     allTV[index].setBackgroundResource(R.color.blue)
                     allTV[index].text = s
@@ -61,6 +66,9 @@ class TestingFragment : BaseFragment() {
                         }
 
                         allTV.forEach { it.setOnClickListener {  } }
+                    }
+                    allIV[index].setOnClickListener {
+                        viewModel.speak(s, current.questionWord.language, !current.foreignToRussian)
                     }
                 }
             }

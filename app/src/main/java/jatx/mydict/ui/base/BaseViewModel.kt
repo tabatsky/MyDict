@@ -27,4 +27,7 @@ open class BaseViewModel: ViewModel() {
 
     val auth: Auth
         get() = activity as? Auth ?: throw IllegalStateException()
+
+    val speaker: Speaker
+        get() = activity as? Speaker ?: throw IllegalStateException()
 }

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import jatx.mydict.contracts.*
+import jatx.mydict.domain.Language
 import jatx.mydict.ui.dict.DictFragmentDirections
 import jatx.mydict.ui.main.MainFragmentDirections
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +34,7 @@ import java.io.File
 import java.io.PrintWriter
 import java.util.*
 
-class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Auth {
+class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Auth, Speaker {
 
     private lateinit var navController: NavController
 
@@ -63,6 +65,8 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
             }
         }
 
+    private lateinit var tts: TextToSpeech
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -79,6 +83,8 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                 signIn(email, password)
             }
         }
+
+        tts = TextToSpeech(this) {}
     }
 
     override fun onStart() {
@@ -354,4 +360,19 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
             }
     }
 
+    override fun speak(text: String, language: Language, isForeign: Boolean) {
+        val locale = if (isForeign) {
+            when (language) {
+                Language.ENGLISH -> Locale.ENGLISH
+                Language.DEUTSCH -> Locale.GERMAN
+                Language.JAPANESE -> Locale.JAPANESE
+            }
+        } else {
+            Locale("ru", "RU")
+        }
+        val actualText = text.split("、").first()
+
+        tts.language = locale
+        tts.speak(actualText, TextToSpeech.QUEUE_FLUSH, null)
+    }
 }
