@@ -6,5 +6,6 @@ data class CurrentQuestion(
     val questionWord: Word,
     val question: String,
     val answers: List<String>,
-    val correctIndex: Int
+    val correctIndex: Int,
+    val foreignToRussian: Boolean
 )

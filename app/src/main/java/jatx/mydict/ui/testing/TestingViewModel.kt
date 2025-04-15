@@ -8,7 +8,6 @@ import jatx.mydict.domain.models.Word
 import jatx.mydict.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -73,22 +72,24 @@ class TestingViewModel : BaseViewModel() {
     }
 
     fun showNext() {
-        val range1 = originals.indices
-        val range2 = 0..1
+        val wordRange = originals.indices
+        val languageRange = 0..1
 
         val allWords = listOf(originals, translations)
 
-        val indices1 = range1.shuffled().sortedBy { wordList[it].orderByValue } .subList(0, 4)
-        val indices2 = range2.shuffled()
+        val wordIndices = wordRange.shuffled().sortedBy { wordList[it].orderByValue } .subList(0, 4)
+        val languageIndices = languageRange.shuffled()
 
-        val words1 = allWords[indices2[0]]
-        val words2 = allWords[indices2[1]]
+        val foreignToRussian = languageIndices[0] == 0
 
-        val questionWord = wordList[indices1[0]]
-        val question = words1[indices1[0]]
+        val words1 = allWords[languageIndices[0]]
+        val words2 = allWords[languageIndices[1]]
+
+        val questionWord = wordList[wordIndices[0]]
+        val question = words1[wordIndices[0]]
 
         val answers = arrayListOf<String>()
-        indices1.forEach {
+        wordIndices.forEach {
             answers.add(words2[it])
         }
 
@@ -100,7 +101,8 @@ class TestingViewModel : BaseViewModel() {
             questionWord,
             question,
             shuffledAnswers,
-            correctIndex
+            correctIndex,
+            foreignToRussian
         )
 
         _currentQuestion.value = currentQuestion
