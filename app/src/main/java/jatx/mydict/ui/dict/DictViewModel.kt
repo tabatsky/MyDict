@@ -60,7 +60,9 @@ class DictViewModel : BaseViewModel() {
                     .combine(searchTextFlow) { words, searchTextString ->
                         words.filter {
                             it.original.lowercase()
-                                .contains(searchTextString.lowercase())
+                                .contains(searchTextString.lowercase()) ||
+                                    it.translation.lowercase()
+                                        .contains(searchTextString.lowercase())
                         }
                     }.collect {
                         withContext(Dispatchers.Main) {
