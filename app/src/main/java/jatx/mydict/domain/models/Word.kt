@@ -1,9 +1,10 @@
 package jatx.mydict.domain.models
 
 import jatx.mydict.domain.Language
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
 
-@Serializable
+@InternalSerializationApi @Serializable
 data class Word(
     val id: Int = 0,
     val original: String,
@@ -21,5 +22,21 @@ data class Word(
                 && other.comment == comment
                 && other.translation == translation
                 && other.language == language
+    }
+
+    fun actualOriginal(language: Language) = if (language == Language.JAPANESE) {
+        original
+    } else {
+        original.replaceFirstChar { it.lowercase() }
+    }
+
+    val actualTranslation = translation.replaceFirstChar { it.lowercase() }
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + original.hashCode()
+        result = 31 * result + comment.hashCode()
+        result = 31 * result + translation.hashCode()
+        result = 31 * result + language.hashCode()
+        return result
     }
 }

@@ -8,15 +8,20 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jatx.mydict.R
 import jatx.mydict.databinding.ItemDictBinding
+import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
+import kotlinx.serialization.InternalSerializationApi
 
-class DictAdapter: ListAdapter<DictAdapter.WordWithPosition, DictAdapter.VH>(WordDiffUtil()) {
+@OptIn(InternalSerializationApi::class)
+class DictAdapter(
+    private val language: Language
+): ListAdapter<DictAdapter.WordWithPosition, DictAdapter.VH>(WordDiffUtil()) {
 
     var onWordClick: (Word) -> Unit = {}
 
     fun updateWords(words: List<Word>) {
         submitList(words.mapIndexed { index, word ->
-            WordWithPosition(index, word)
+            WordWithPosition(index, word, language)
         })
     }
 
@@ -53,9 +58,10 @@ class DictAdapter: ListAdapter<DictAdapter.WordWithPosition, DictAdapter.VH>(Wor
 
     data class WordWithPosition(
         val position: Int,
-        val word: Word
+        val word: Word,
+        val language: Language
     ) {
-        val originalWithPosition =  "${position + 1}. ${word.original}"
-        val translation = word.translation
+        val originalWithPosition =  "${position + 1}. ${word.actualOriginal(language)}"
+        val translation = word.actualTranslation
     }
 }

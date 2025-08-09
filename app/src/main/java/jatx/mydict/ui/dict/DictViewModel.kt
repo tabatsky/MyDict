@@ -16,9 +16,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.InternalSerializationApi
 
 const val MINIMUM_WORD_COUNT_FOR_TESTING = 4
 
+@OptIn(InternalSerializationApi::class)
 class DictViewModel : BaseViewModel() {
     lateinit var language: Language
 

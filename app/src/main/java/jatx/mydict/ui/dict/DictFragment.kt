@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import jatx.mydict.databinding.DictFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
+import kotlinx.serialization.InternalSerializationApi
 
+@OptIn(InternalSerializationApi::class)
 class DictFragment : BaseFragment() {
 
     private val args by navArgs<DictFragmentArgs>()
@@ -21,7 +23,9 @@ class DictFragment : BaseFragment() {
 
     private lateinit var dictFragmentBinding: DictFragmentBinding
 
-    private val adapter = DictAdapter()
+    private val adapter by lazy {
+        DictAdapter(viewModel.language)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
