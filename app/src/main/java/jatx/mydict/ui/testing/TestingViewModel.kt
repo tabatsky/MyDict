@@ -10,7 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.InternalSerializationApi
 
+@OptIn(InternalSerializationApi::class)
 class TestingViewModel : BaseViewModel() {
     lateinit var language: Language
 
@@ -39,8 +41,8 @@ class TestingViewModel : BaseViewModel() {
                         originals.clear()
                         translations.clear()
                         wordList.addAll(words)
-                        originals.addAll(words.map { it.original })
-                        translations.addAll(words.map { it.translation })
+                        originals.addAll(words.map { it.decapitalizedOriginal })
+                        translations.addAll(words.map { it.decapitalizedTranslation })
                         withContext(Dispatchers.Main) {
                             if (!firstQuestionInitDone) {
                                 showNext()

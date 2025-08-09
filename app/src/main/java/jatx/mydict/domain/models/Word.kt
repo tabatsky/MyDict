@@ -24,13 +24,14 @@ data class Word(
                 && other.language == language
     }
 
-    fun actualOriginal(language: Language) = if (language == Language.JAPANESE) {
-        original
-    } else {
-        original.replaceFirstChar { it.lowercase() }
-    }
+    val decapitalizedOriginal: String
+        get() = if (language == Language.JAPANESE) {
+            original
+        } else {
+            original.replaceFirstChar { it.lowercase() }
+        }
 
-    val actualTranslation = translation.replaceFirstChar { it.lowercase() }
+    val decapitalizedTranslation = translation.replaceFirstChar { it.lowercase() }
     override fun hashCode(): Int {
         var result = id
         result = 31 * result + original.hashCode()

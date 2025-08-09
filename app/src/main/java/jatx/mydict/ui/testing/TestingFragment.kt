@@ -11,7 +11,9 @@ import androidx.navigation.fragment.navArgs
 import jatx.mydict.R
 import jatx.mydict.databinding.TestingFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
+import kotlinx.serialization.InternalSerializationApi
 
+@OptIn(InternalSerializationApi::class)
 class TestingFragment : BaseFragment() {
 
     private val args by navArgs<TestingFragmentArgs>()

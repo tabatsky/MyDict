@@ -24,7 +24,7 @@ class DictFragment : BaseFragment() {
     private lateinit var dictFragmentBinding: DictFragmentBinding
 
     private val adapter by lazy {
-        DictAdapter(viewModel.language)
+        DictAdapter()
     }
 
     override fun onCreateView(
