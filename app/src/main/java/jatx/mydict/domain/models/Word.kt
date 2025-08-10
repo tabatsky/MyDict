@@ -15,6 +15,41 @@ data class Word(
     var incorrectAnswerCount: Int = 0,
     var orderByValue: Int
 ) {
+    val decapitalizedOriginal: String
+        get() = if (language == Language.JAPANESE) {
+            original
+        } else {
+            original.replaceFirstChar { it.lowercase() }
+        }
+
+    val decapitalizedTranslation = translation.replaceFirstChar { it.lowercase() }
+
+    fun matches(answer: String) = if (language == Language.JAPANESE)  {
+        original == answer
+    } else {
+        original.lowercase() == answer.lowercase()
+    }
+
+    fun startsWith(answer: String) = if (language == Language.JAPANESE)  {
+        original.startsWith(answer)
+    } else {
+        original.lowercase().startsWith(answer.lowercase())
+    }
+
+    fun commonStartLength(answer: String): Int {
+        var n = 0
+        while (n < original.length && n < answer.length) {
+            val substr = answer.substring(0, n + 1)
+            if (matches(substr)) return (n + 1)
+            if (startsWith(substr)) {
+                n = n + 1
+            } else {
+                break
+            }
+        }
+        return n
+    }
+
     override fun equals(other: Any?): Boolean {
         return other is Word
                 && other.id ==id
@@ -24,14 +59,6 @@ data class Word(
                 && other.language == language
     }
 
-    val decapitalizedOriginal: String
-        get() = if (language == Language.JAPANESE) {
-            original
-        } else {
-            original.replaceFirstChar { it.lowercase() }
-        }
-
-    val decapitalizedTranslation = translation.replaceFirstChar { it.lowercase() }
     override fun hashCode(): Int {
         var result = id
         result = 31 * result + original.hashCode()

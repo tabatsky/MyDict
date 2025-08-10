@@ -23,6 +23,9 @@ class Testing2ViewModel : BaseViewModel() {
     private val _currentWord: MutableLiveData<Word?> = MutableLiveData(null)
     val currentWord: LiveData<Word?> = _currentWord
 
+    private val _currentAnswer = MutableLiveData("")
+    val currentAnswer: LiveData<String> = _currentAnswer
+
     private var firstQuestionInitDone = false
 
     fun startJob() {
@@ -47,6 +50,13 @@ class Testing2ViewModel : BaseViewModel() {
     fun showNext() {
         val word = wordList.shuffled().firstOrNull()
 
+        _currentAnswer.value = ""
         _currentWord.value = word
+    }
+
+    fun updateAnswer(answer: String) {
+        if (currentAnswer.value != answer) {
+            _currentAnswer.value = answer
+        }
     }
 }

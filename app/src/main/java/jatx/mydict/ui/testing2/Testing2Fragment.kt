@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import jatx.mydict.R
 import jatx.mydict.databinding.Testing2FragmentBinding
 import jatx.mydict.ui.testing.TestingFragmentArgs
 import kotlinx.serialization.InternalSerializationApi
@@ -36,6 +38,27 @@ class Testing2Fragment : Fragment() {
             btnNextQuestion.setOnClickListener {
                 viewModel.showNext()
             }
+            etAnswer.addTextChangedListener(
+                onTextChanged = { newText, _, _, _ ->
+                    viewModel.updateAnswer(newText.toString())
+                },
+                afterTextChanged = {
+                    etAnswer.setSelection(etAnswer.text.length)
+                }
+            )
+            btnHint.setOnClickListener {
+                viewModel.currentAnswer.value?.let { currentAnswer ->
+                    viewModel.currentWord.value?.let {
+                        if (it.matches(currentAnswer)) {
+                            return@setOnClickListener
+                        } else {
+                            val commonLength = it.commonStartLength(currentAnswer)
+                            val newAnswer = it.decapitalizedOriginal.substring(0, commonLength + 1)
+                            viewModel.updateAnswer(newAnswer)
+                        }
+                    }
+                }
+            }
         }
 
         return testing2FragmentBinding.root
@@ -46,6 +69,28 @@ class Testing2Fragment : Fragment() {
         viewModel.currentWord.observe(viewLifecycleOwner) { currentWord ->
             testing2FragmentBinding.tvQuestion.text = currentWord?.decapitalizedTranslation
         }
+        viewModel.currentAnswer.observe(viewLifecycleOwner) { currentAnswer ->
+            updateAnswerField(currentAnswer)
+        }
         viewModel.startJob()
+    }
+
+    private fun updateAnswerField(answer: String) {
+        with(testing2FragmentBinding.etAnswer) {
+            setText(answer)
+            viewModel.currentWord.value?.let {
+                if (it.matches(answer)) {
+                    isEnabled = false
+                    setBackgroundResource(R.color.green)
+                } else {
+                    isEnabled = true
+                    if (it.startsWith(answer)) {
+                        setBackgroundResource(R.color.blue)
+                    } else {
+                        setBackgroundResource(R.color.red)
+                    }
+                }
+            }
+        }
     }
 }
