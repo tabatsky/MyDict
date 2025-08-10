@@ -10,7 +10,9 @@ import jatx.mydict.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.InternalSerializationApi
 
+@OptIn(InternalSerializationApi::class)
 class WordViewModel : BaseViewModel() {
     lateinit var wordScreen: WordScreen
 

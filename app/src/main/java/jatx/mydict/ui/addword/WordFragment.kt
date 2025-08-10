@@ -1,7 +1,6 @@
 package jatx.mydict.ui.addword
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,10 @@ import jatx.mydict.contracts.EditWordScreen
 import jatx.mydict.contracts.WordScreen
 import jatx.mydict.databinding.WordFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 
+@OptIn(InternalSerializationApi::class)
 class WordFragment : BaseFragment() {
 
     private val args by navArgs<WordFragmentArgs>()

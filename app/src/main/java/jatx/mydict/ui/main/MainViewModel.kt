@@ -4,7 +4,9 @@ import jatx.mydict.contracts.AuthScreen
 import jatx.mydict.contracts.DictScreen
 import jatx.mydict.domain.Language
 import jatx.mydict.ui.base.BaseViewModel
+import kotlinx.serialization.InternalSerializationApi
 
+@OptIn(InternalSerializationApi::class)
 class MainViewModel : BaseViewModel() {
     fun selectLanguage(language: Language) {
         navigator.navigateTo(DictScreen(language))

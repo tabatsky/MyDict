@@ -1,3 +1,5 @@
+@file:OptIn(InternalSerializationApi::class)
+
 package jatx.mydict.data.db.entity
 
 import androidx.room.ColumnInfo
@@ -6,6 +8,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
+import kotlinx.serialization.InternalSerializationApi
 
 @Entity(
     tableName = "words",

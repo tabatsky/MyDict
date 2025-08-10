@@ -28,12 +28,15 @@ import jatx.mydict.ui.main.MainFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 import java.io.File
 import java.io.PrintWriter
 import java.util.*
+import androidx.core.content.edit
 
+@OptIn(InternalSerializationApi::class)
 class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Auth, Speaker {
 
     private lateinit var navController: NavController
@@ -119,6 +122,11 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
             is TestingScreen -> {
                 val title = getString(R.string.title_testing) + screen.language.rusString
                 val action = DictFragmentDirections.actionDictFragmentToTestingFragment(screen.language, title)
+                navController.navigate(action)
+            }
+            is Testing2Screen -> {
+                val title = getString(R.string.title_testing2) + screen.language.rusString
+                val action = DictFragmentDirections.actionDictFragmentToTesting2Fragment(screen.language, title)
                 navController.navigate(action)
             }
             is AuthScreen -> {
@@ -318,10 +326,10 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
 
     override fun saveAuth(email: String, password: String) {
         val sp = getSharedPreferences("MyDict", 0)
-        val editor = sp.edit()
-        editor.putString("email", email)
-        editor.putString("password", password)
-        editor.apply()
+        sp.edit {
+            putString("email", email)
+            putString("password", password)
+        }
     }
 
     override fun signIn(email: String, password: String) {

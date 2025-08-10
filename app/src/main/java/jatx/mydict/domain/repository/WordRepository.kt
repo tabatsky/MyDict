@@ -3,7 +3,9 @@ package jatx.mydict.domain.repository
 import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.InternalSerializationApi
 
+@OptIn(InternalSerializationApi::class)
 interface WordRepository {
     fun getAllByLanguage(language: Language): Flow<List<Word>>
     fun getStatsByLanguage(language: Language): Flow<Pair<Int, Int>>

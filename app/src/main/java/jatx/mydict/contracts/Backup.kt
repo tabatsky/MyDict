@@ -1,6 +1,7 @@
 package jatx.mydict.contracts
 
 import jatx.mydict.domain.models.Word
+import kotlinx.serialization.InternalSerializationApi
 
 interface Backup {
     fun loadData()
@@ -9,6 +10,7 @@ interface Backup {
     fun saveDataToFirestore()
 }
 
+@OptIn(InternalSerializationApi::class)
 data class BackupData(
     val words: List<Word>
 )

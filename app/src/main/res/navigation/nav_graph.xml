@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_dictFragment_to_testingFragment"
             app:destination="@id/testingFragment" />
+        <action
+            android:id="@+id/action_dictFragment_to_testing2Fragment"
+            app:destination="@id/testing2Fragment" />
         <argument
             android:name="language"
             app:argType="jatx.mydict.domain.Language" />
@@ -64,6 +67,18 @@
         android:name="jatx.mydict.ui.auth.AuthFragment"
         android:label="{title}"
         tools:layout="@layout/auth_fragment">
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/testing2Fragment"
+        android:name="jatx.mydict.ui.testing2.Testing2Fragment"
+        android:label="{title}"
+        tools:layout="@layout/testing2_fragment">
+        <argument
+            android:name="language"
+            app:argType="jatx.mydict.domain.Language" />
         <argument
             android:name="title"
             app:argType="string" />

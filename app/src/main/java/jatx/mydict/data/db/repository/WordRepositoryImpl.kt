@@ -9,7 +9,9 @@ import jatx.mydict.domain.repository.WordRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.InternalSerializationApi
 
+@OptIn(InternalSerializationApi::class)
 class WordRepositoryImpl(private val appDatabase: AppDatabase): WordRepository {
     override fun getAllByLanguage(language: Language) = appDatabase
         .wordDao()

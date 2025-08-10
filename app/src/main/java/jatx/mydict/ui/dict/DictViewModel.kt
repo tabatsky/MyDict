@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import jatx.mydict.R
 import jatx.mydict.contracts.AddWordScreen
 import jatx.mydict.contracts.EditWordScreen
+import jatx.mydict.contracts.Testing2Screen
 import jatx.mydict.contracts.TestingScreen
 import jatx.mydict.domain.Language
 import jatx.mydict.domain.models.Word
@@ -51,6 +52,12 @@ class DictViewModel : BaseViewModel() {
             } else {
                 navigator.navigateTo(TestingScreen(language))
             }
+        }
+    }
+
+    fun openTesting2() = viewModelScope.launch {
+        withContext(Dispatchers.Main) {
+            navigator.navigateTo(Testing2Screen(language))
         }
     }
 
