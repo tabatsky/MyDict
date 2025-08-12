@@ -59,4 +59,10 @@ class Testing2ViewModel : BaseViewModel() {
             _currentAnswer.value = answer
         }
     }
+
+    fun speakCurrentWord() = speaker.speak(
+        currentWord.value!!.original,
+        currentWord.value!!.language,
+        true
+    )
 }
