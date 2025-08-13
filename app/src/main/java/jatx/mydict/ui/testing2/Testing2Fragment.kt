@@ -72,7 +72,16 @@ class Testing2Fragment : Fragment() {
         viewModel.currentAnswer.observe(viewLifecycleOwner) { currentAnswer ->
             updateAnswerField(currentAnswer)
         }
+        viewModel.stats.observe(viewLifecycleOwner) {
+            testing2FragmentBinding.tvStatsCorrect.text = it.first.toString()
+            testing2FragmentBinding.tvStatsIncorrect.text = it.second.toString()
+        }
         viewModel.startJob()
+    }
+
+    override fun onStop() {
+        viewModel.stopJob()
+        super.onStop()
     }
 
     private fun updateAnswerField(answer: String) {

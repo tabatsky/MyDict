@@ -19,12 +19,16 @@ class Testing2ViewModel : BaseViewModel() {
     private val wordList = arrayListOf<Word>()
 
     private var collectWordsJob: Job? = null
+    private var collectStatsJob: Job? = null
 
     private val _currentWord: MutableLiveData<Word?> = MutableLiveData(null)
     val currentWord: LiveData<Word?> = _currentWord
 
     private val _currentAnswer = MutableLiveData("")
     val currentAnswer: LiveData<String> = _currentAnswer
+
+    private val _stats = MutableLiveData(0 to 0)
+    val stats: LiveData<Pair<Int, Int>> = _stats
 
     private var firstQuestionInitDone = false
 
@@ -44,6 +48,24 @@ class Testing2ViewModel : BaseViewModel() {
                     }
                 }
             }
+        }
+        collectStatsJob = viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                deps.wordRepository.getStatsByLanguage(language).collect {
+                    withContext(Dispatchers.Main) {
+                        _stats.value = it
+                    }
+                }
+            }
+        }
+    }
+
+    fun stopJob() {
+        collectWordsJob?.let {
+            if (!it.isCancelled) it.cancel()
+        }
+        collectStatsJob?.let {
+            if (!it.isCancelled) it.cancel()
         }
     }
 
