@@ -48,7 +48,7 @@ class Testing2ViewModel : BaseViewModel() {
     }
 
     fun showNext() {
-        val word = wordList.shuffled().firstOrNull()
+        val word = wordList.shuffled().minByOrNull { it.orderByValue }
 
         _currentAnswer.value = ""
         _currentWord.value = word
@@ -57,6 +57,18 @@ class Testing2ViewModel : BaseViewModel() {
     fun updateAnswer(answer: String) {
         if (currentAnswer.value != answer) {
             _currentAnswer.value = answer
+        }
+    }
+
+    fun correctAnswer() {
+        _currentWord.value?.let { word ->
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    word.correctAnswerCount += 1
+                    word.orderByValue += 1
+                    deps.wordRepository.editWord(word)
+                }
+            }
         }
     }
 

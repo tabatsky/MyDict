@@ -83,6 +83,7 @@ class Testing2Fragment : Fragment() {
                     isEnabled = false
                     setBackgroundResource(R.color.green)
                     viewModel.speakCurrentWord()
+                    viewModel.correctAnswer()
                 } else {
                     isEnabled = true
                     if (it.startsWith(answer)) {
