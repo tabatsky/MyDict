@@ -56,8 +56,13 @@ class DictViewModel : BaseViewModel() {
     }
 
     fun openTesting2() = viewModelScope.launch {
+        val count = deps.wordRepository.getCountByLanguage(language)
         withContext(Dispatchers.Main) {
-            navigator.navigateTo(Testing2Screen(language))
+            if (count < 1) {
+                toasts.showToast(R.string.toast_at_least_one_word)
+            } else {
+                navigator.navigateTo(Testing2Screen(language))
+            }
         }
     }
 

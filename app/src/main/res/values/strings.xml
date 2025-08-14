@@ -24,6 +24,7 @@
     <string name="title_testing">Тестирование:\u0020</string>
     <string name="title_testing2">Тестирование 2:\u0020</string>
     <string name="toast_minimum_word_count">В словаре должно быть хотя бы 4 слова</string>
+    <string name="toast_at_least_one_word">В словаре должно быть хотя бы одно слово</string>
     <string name="btn_testing">Тест 1</string>
     <string name="btn_testing2">Тест 2</string>
     <string name="btn_next_question">Дальше</string>
