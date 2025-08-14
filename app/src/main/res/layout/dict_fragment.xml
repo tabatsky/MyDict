@@ -28,12 +28,28 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/et_search"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:text="@={viewmodel.searchText}" />
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/et_search"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:inputType="text"
+                        android:text="@={viewmodel.searchText}" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewmodel.wordCount.toString()}"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:padding="16dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"

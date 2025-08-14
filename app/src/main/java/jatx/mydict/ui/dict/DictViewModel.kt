@@ -28,6 +28,9 @@ class DictViewModel : BaseViewModel() {
     private val _words = MutableLiveData<List<Word>>(listOf())
     val words: LiveData<List<Word>> = _words
 
+    private val _wordCount = MutableLiveData(0)
+    val wordCount: LiveData<Int> = _wordCount
+
     val searchText = MutableLiveData("")
 
     private var initialOrderByValue: Int = 0
@@ -90,6 +93,7 @@ class DictViewModel : BaseViewModel() {
                                     it.translation
                                 }
                             }
+                            _wordCount.value = it.size
                             initialOrderByValue = it.minOfOrNull { word -> word.orderByValue } ?: 0
                         }
                     }
