@@ -333,39 +333,47 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
     }
 
     override fun signIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    Log.e("user", user?.uid.toString())
-                    saveAuth(email, password)
-                    showToast(R.string.toast_sign_in_success)
-                    theUser = user
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.e("sign in", "signInWithEmail:failure", task.exception)
-                    showToast(R.string.toast_sign_in_error)
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        val user = auth.currentUser
+                        Log.e("user", user?.uid.toString())
+                        saveAuth(email, password)
+                        showToast(R.string.toast_sign_in_success)
+                        theUser = user
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.e("sign in", "signInWithEmail:failure", task.exception)
+                        showToast(R.string.toast_sign_in_error)
+                    }
                 }
-            }
+        } else {
+            showToast(R.string.toast_fill_all_fields)
+        }
     }
 
     override fun signUp(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    Log.e("user", user?.uid.toString())
-                    showToast(R.string.toast_sign_up_success)
-                    saveAuth(email, password)
-                    theUser = user
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.e("sign up", "createUserWithEmail:failure", task.exception)
-                    showToast(R.string.toast_sign_up_error)
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        val user = auth.currentUser
+                        Log.e("user", user?.uid.toString())
+                        showToast(R.string.toast_sign_up_success)
+                        saveAuth(email, password)
+                        theUser = user
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.e("sign up", "createUserWithEmail:failure", task.exception)
+                        showToast(R.string.toast_sign_up_error)
+                    }
                 }
-            }
+        } else {
+            showToast(R.string.toast_fill_all_fields)
+        }
     }
 
     override fun speak(text: String, language: Language, isForeign: Boolean) {

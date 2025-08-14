@@ -37,6 +37,7 @@
     <string name="btn_save_firestore">Выгрузить Firestore</string>
     <string name="btn_load_firestore">Загрузить Firestore</string>
     <string name="toast_need_login">Необходима авторизация</string>
+    <string name="toast_fill_all_fields">Заполните все поля</string>
     <string name="toast_sign_in_success">Авторизация успешна</string>
     <string name="toast_sign_in_error">Ошибка авторизации</string>
     <string name="toast_sign_up_success">Регистрация успешна</string>
