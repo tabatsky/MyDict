@@ -73,9 +73,24 @@ class Testing2ViewModel : BaseViewModel() {
     }
 
     fun showNext() {
-        val word = wordList.minByOrNull { word ->
-            1000000 * word.orderByValue - word.id + rnd.nextInt(24)
-        }
+        val wordRange = wordList.indices.toList()
+        val word = wordRange
+            .sortedBy {
+                -wordList[it].id
+            }
+            .mapIndexed { sortIndex, wordIndex ->
+                val sortValue = wordList[wordIndex].let { word ->
+                    1000000 * word.orderByValue + sortIndex + rnd.nextInt(20) + rnd.nextDouble(1.0)
+                }
+                Triple(sortValue, sortIndex, wordIndex)
+            }
+            .sortedBy {
+                it.first
+            }
+            .map {
+                wordList[it.third]
+            }
+            .first()
 
         _currentAnswer.value = ""
         _currentWord.value = word

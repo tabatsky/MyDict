@@ -77,16 +77,28 @@ class TestingViewModel : BaseViewModel() {
     }
 
     fun showNext() {
-        val wordRange = originals.indices
+        val wordRange = originals.indices.toList()
         val languageRange = 0..1
 
         val allWords = listOf(originals, translations)
 
-        val wordIndices = wordRange.sortedBy {
-            wordList[it].let { word ->
-                1000000 * word.orderByValue - word.id + rnd.nextInt(24)
+        val wordIndices = wordRange
+            .sortedBy {
+                -wordList[it].id
             }
-        } .subList(0, 4)
+            .mapIndexed { sortIndex, wordIndex ->
+                val sortValue = wordList[wordIndex].let { word ->
+                    1000000 * word.orderByValue + sortIndex + rnd.nextInt(20) + rnd.nextDouble(1.0)
+                }
+                Triple(sortValue, sortIndex, wordIndex)
+            }
+            .sortedBy {
+                it.first
+            }
+            .map {
+                it.third
+            }
+            .subList(0, 4)
         val languageIndices = languageRange.shuffled()
 
         val foreignToRussian = languageIndices[0] == 0
