@@ -11,6 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.InternalSerializationApi
+import kotlin.random.Random
 
 @OptIn(InternalSerializationApi::class)
 class TestingViewModel : BaseViewModel() {
@@ -31,6 +32,8 @@ class TestingViewModel : BaseViewModel() {
     val stats: LiveData<Pair<Int, Int>> = _stats
 
     private var firstQuestionInitDone = false
+
+    private val rnd = Random(137)
 
     fun startJob() {
         collectWordsJob = viewModelScope.launch {
@@ -79,7 +82,11 @@ class TestingViewModel : BaseViewModel() {
 
         val allWords = listOf(originals, translations)
 
-        val wordIndices = wordRange.shuffled().sortedBy { wordList[it].orderByValue } .subList(0, 4)
+        val wordIndices = wordRange.sortedBy {
+            wordList[it].let { word ->
+                1000000 * word.orderByValue - word.id + rnd.nextInt(24)
+            }
+        } .subList(0, 4)
         val languageIndices = languageRange.shuffled()
 
         val foreignToRussian = languageIndices[0] == 0

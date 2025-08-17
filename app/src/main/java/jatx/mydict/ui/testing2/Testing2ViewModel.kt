@@ -11,6 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.InternalSerializationApi
+import kotlin.random.Random
 
 @OptIn(InternalSerializationApi::class)
 class Testing2ViewModel : BaseViewModel() {
@@ -31,6 +32,8 @@ class Testing2ViewModel : BaseViewModel() {
     val stats: LiveData<Pair<Int, Int>> = _stats
 
     private var firstQuestionInitDone = false
+
+    private val rnd = Random(137)
 
     fun startJob() {
         collectWordsJob = viewModelScope.launch {
@@ -70,7 +73,9 @@ class Testing2ViewModel : BaseViewModel() {
     }
 
     fun showNext() {
-        val word = wordList.shuffled().minByOrNull { it.orderByValue }
+        val word = wordList.minByOrNull { word ->
+            1000000 * word.orderByValue - word.id + rnd.nextInt(24)
+        }
 
         _currentAnswer.value = ""
         _currentWord.value = word
