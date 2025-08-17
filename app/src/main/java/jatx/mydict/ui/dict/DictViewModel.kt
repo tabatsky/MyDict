@@ -37,7 +37,7 @@ class DictViewModel : BaseViewModel() {
 
     private var collectJob: Job? = null
 
-    var isSortByOriginal = true
+    var sortBy = SortBy.BY_ORIGINAL
 
     fun addWord() {
         navigator.navigateTo(AddWordScreen(language, initialOrderByValue))
@@ -84,13 +84,19 @@ class DictViewModel : BaseViewModel() {
                     }.collect {
                         withContext(Dispatchers.Main) {
                             _words.value = it.sortedBy {
-                                if (isSortByOriginal) {
-                                    it.original
-                                        .replace("der ", "", ignoreCase = true)
-                                        .replace("die ", "", ignoreCase = true)
-                                        .replace("das ", "", ignoreCase = true)
-                                } else {
-                                    it.translation
+                                when (sortBy) {
+                                    SortBy.BY_ORIGINAL -> {
+                                        it.original
+                                            .replace("der ", "", ignoreCase = true)
+                                            .replace("die ", "", ignoreCase = true)
+                                            .replace("das ", "", ignoreCase = true)
+                                    }
+                                    SortBy.BY_TRANSLATION -> {
+                                        it.translation
+                                    }
+                                    SortBy.BY_ID_DESC -> {
+                                        (999999999 - it.id).toString()
+                                    }
                                 }
                             }
                             _wordCount.value = it.size
@@ -107,15 +113,19 @@ class DictViewModel : BaseViewModel() {
         }
     }
 
-    fun sortByOriginal() {
+    fun toggleSortByOriginal() {
         stopJob()
-        isSortByOriginal = true
+        sortBy = if (sortBy == SortBy.BY_ORIGINAL) SortBy.BY_ID_DESC else SortBy.BY_ORIGINAL
         startJob()
     }
 
-    fun sortByTranslation() {
+    fun toggleSortByTranslation() {
         stopJob()
-        isSortByOriginal = false
+        sortBy = if (sortBy == SortBy.BY_TRANSLATION) SortBy.BY_ID_DESC else SortBy.BY_TRANSLATION
         startJob()
     }
+}
+
+enum class SortBy {
+    BY_ORIGINAL, BY_TRANSLATION, BY_ID_DESC
 }

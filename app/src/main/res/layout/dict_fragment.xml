@@ -79,7 +79,7 @@
                         android:background="@color/yellow"
                         android:textColor="@color/black"
                         android:text="@string/hint_word"
-                        android:onClick="@{()->viewmodel.sortByOriginal()}"
+                        android:onClick="@{()->viewmodel.toggleSortByOriginal()}"
                         />
 
                     <View
@@ -97,7 +97,7 @@
                         android:background="@color/blue"
                         android:textColor="@color/black"
                         android:text="@string/hint_translation"
-                        android:onClick="@{()->viewmodel.sortByTranslation()}"
+                        android:onClick="@{()->viewmodel.toggleSortByTranslation()}"
                         />
 
                     <View
