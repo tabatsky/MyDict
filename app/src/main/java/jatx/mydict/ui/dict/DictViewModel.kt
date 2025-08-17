@@ -83,19 +83,19 @@ class DictViewModel : BaseViewModel() {
                         }
                     }.collect {
                         withContext(Dispatchers.Main) {
-                            _words.value = it.sortedBy {
+                            _words.value = it.sortedBy { word ->
                                 when (sortBy) {
                                     SortBy.BY_ORIGINAL -> {
-                                        it.original
+                                        word.original
                                             .replace("der ", "", ignoreCase = true)
                                             .replace("die ", "", ignoreCase = true)
                                             .replace("das ", "", ignoreCase = true)
                                     }
                                     SortBy.BY_TRANSLATION -> {
-                                        it.translation
+                                        word.translation
                                     }
                                     SortBy.BY_ID_DESC -> {
-                                        (999999999 - it.id).toString()
+                                        (999999999 - word.id).toString()
                                     }
                                 }
                             }
