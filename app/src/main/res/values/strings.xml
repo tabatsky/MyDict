@@ -44,4 +44,5 @@
     <string name="toast_sign_up_error">Ошибка регистрации</string>
     <string name="hint_e_mail">E-mail</string>
     <string name="hint_password">Пароль</string>
+    <string name="toast_fill_word_and_translation">Заполните слово и перевод</string>
 </resources>
