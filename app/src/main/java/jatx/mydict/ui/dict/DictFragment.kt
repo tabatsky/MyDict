@@ -18,6 +18,9 @@ class DictFragment : BaseFragment() {
     private val viewModel: DictViewModel by lazy {
        ViewModelProvider(this)[DictViewModel::class.java].apply {
            language = args.language
+           afterSort = {
+               dictFragmentBinding.rvWords.scrollToPosition(0)
+           }
        }
     }
 

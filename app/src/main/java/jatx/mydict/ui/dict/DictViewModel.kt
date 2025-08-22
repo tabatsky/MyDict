@@ -14,6 +14,7 @@ import jatx.mydict.domain.models.Word
 import jatx.mydict.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,6 +25,7 @@ const val MINIMUM_WORD_COUNT_FOR_TESTING = 4
 @OptIn(InternalSerializationApi::class)
 class DictViewModel : BaseViewModel() {
     lateinit var language: Language
+    lateinit var afterSort: () -> Unit
 
     private val _words = MutableLiveData<List<Word>>(listOf())
     val words: LiveData<List<Word>> = _words
@@ -83,7 +85,8 @@ class DictViewModel : BaseViewModel() {
                         }
                     }.collect {
                         withContext(Dispatchers.Main) {
-                            _words.value = it.sortedBy { word ->
+                            val oldWords = _words.value
+                            val newWords = it.sortedBy { word ->
                                 when (sortBy) {
                                     SortBy.BY_ORIGINAL -> {
                                         word.original
@@ -99,8 +102,13 @@ class DictViewModel : BaseViewModel() {
                                     }
                                 }
                             }
+                            _words.value = newWords
                             _wordCount.value = it.size
                             initialOrderByValue = it.minOfOrNull { word -> word.orderByValue } ?: 0
+                            delay(3000L)
+                            if (newWords != oldWords) {
+                                afterSort()
+                            }
                         }
                     }
             }
