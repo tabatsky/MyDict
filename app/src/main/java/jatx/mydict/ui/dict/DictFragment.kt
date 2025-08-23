@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import jatx.mydict.databinding.DictFragmentBinding
 import jatx.mydict.ui.base.BaseFragment
 import kotlinx.serialization.InternalSerializationApi
@@ -18,16 +20,15 @@ class DictFragment : BaseFragment() {
     private val viewModel: DictViewModel by lazy {
        ViewModelProvider(this)[DictViewModel::class.java].apply {
            language = args.language
-           afterSort = {
-               dictFragmentBinding.rvWords.scrollToPosition(0)
-           }
        }
     }
 
     private lateinit var dictFragmentBinding: DictFragmentBinding
 
     private val adapter by lazy {
-        DictAdapter()
+        DictAdapter(dictFragmentBinding.rvWords) {
+            viewModel.scrollPosition
+        }
     }
 
     override fun onCreateView(
@@ -40,6 +41,12 @@ class DictFragment : BaseFragment() {
         dictFragmentBinding.viewmodel = viewModel
 
         dictFragmentBinding.rvWords.adapter = adapter
+        dictFragmentBinding.rvWords.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                viewModel.scrollPosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition() ?: 0
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
 
         return dictFragmentBinding.root
     }

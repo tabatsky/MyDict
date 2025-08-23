@@ -12,14 +12,17 @@ import jatx.mydict.domain.models.Word
 import kotlinx.serialization.InternalSerializationApi
 
 @OptIn(InternalSerializationApi::class)
-class DictAdapter: ListAdapter<DictAdapter.WordWithPosition, DictAdapter.VH>(WordDiffUtil()) {
+class DictAdapter(private val rv: RecyclerView, private val getPosition: () -> Int):
+    ListAdapter<DictAdapter.WordWithPosition, DictAdapter.VH>(WordDiffUtil()) {
 
     var onWordClick: (Word) -> Unit = {}
 
     fun updateWords(words: List<Word>) {
         submitList(words.mapIndexed { index, word ->
             WordWithPosition(index, word)
-        })
+        }) {
+            rv.scrollToPosition(getPosition())
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
