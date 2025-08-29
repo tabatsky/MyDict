@@ -7,7 +7,10 @@ import jatx.mydict.ui.dict.DictAdapter
 import kotlinx.serialization.InternalSerializationApi
 
 @OptIn(InternalSerializationApi::class)
-@BindingAdapter("items")
-fun <T> setItems(rv: RecyclerView, list: List<T>) {
-    (rv.adapter as? DictAdapter)?.updateWords(list.map { it as Word })
+@BindingAdapter("itemsWithScrollPosition")
+fun <T> setItems(rv: RecyclerView, itemsWithScrollPosition: Pair<List<T>, Int>) {
+    (rv.adapter as? DictAdapter)?.updateWords(
+        itemsWithScrollPosition.first.map { it as Word },
+        itemsWithScrollPosition.second
+    )
 }

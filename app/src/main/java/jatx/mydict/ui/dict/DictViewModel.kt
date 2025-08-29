@@ -25,8 +25,8 @@ const val MINIMUM_WORD_COUNT_FOR_TESTING = 4
 class DictViewModel : BaseViewModel() {
     lateinit var language: Language
 
-    private val _words = MutableLiveData<List<Word>>(listOf())
-    val words: LiveData<List<Word>> = _words
+    private val _wordsWithScrollPosition = MutableLiveData(listOf<Word>() to 0)
+    val wordsWithScrollPosition: LiveData<Pair<List<Word>, Int>> = _wordsWithScrollPosition
 
     private val _wordCount = MutableLiveData(0)
     val wordCount: LiveData<Int> = _wordCount
@@ -85,7 +85,7 @@ class DictViewModel : BaseViewModel() {
                         }
                     }.collect {
                         withContext(Dispatchers.Main) {
-                            val oldWords = _words.value
+                            val oldWords = _wordsWithScrollPosition.value?.first ?: listOf()
                             val newWords = it.sortedBy { word ->
                                 when (sortBy) {
                                     SortBy.BY_ORIGINAL -> {
@@ -102,10 +102,12 @@ class DictViewModel : BaseViewModel() {
                                     }
                                 }
                             }
-                            if (newWords != oldWords) {
-                                scrollPosition = 0
+                            if (scrollPosition > 0) {
+                                oldWords.getOrNull(scrollPosition)?.let { word ->
+                                    scrollPosition = newWords.indexOf(word).takeIf { it >= 0 } ?: 0
+                                }
                             }
-                            _words.value = newWords
+                            _wordsWithScrollPosition.value = newWords to scrollPosition
                             _wordCount.value = it.size
                             initialOrderByValue = it.minOfOrNull { word -> word.orderByValue } ?: 0
                         }

@@ -26,9 +26,7 @@ class DictFragment : BaseFragment() {
     private lateinit var dictFragmentBinding: DictFragmentBinding
 
     private val adapter by lazy {
-        DictAdapter(dictFragmentBinding.rvWords) {
-            viewModel.scrollPosition
-        }
+        DictAdapter(dictFragmentBinding.rvWords)
     }
 
     override fun onCreateView(
