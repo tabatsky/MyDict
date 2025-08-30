@@ -47,7 +47,7 @@ class MainFragment : BaseFragment() {
             }
 
             btnLoadFirestore.setOnClickListener {
-                viewModel.loadDataFromFirestore()
+                viewModel.askForLoadDataFromFirestore()
             }
 
             btnSaveFirestore.setOnClickListener {

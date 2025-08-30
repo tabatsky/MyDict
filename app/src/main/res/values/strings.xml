@@ -45,4 +45,5 @@
     <string name="hint_e_mail">E-mail</string>
     <string name="hint_password">Пароль</string>
     <string name="toast_fill_word_and_translation">Заполните слово и перевод</string>
+    <string name="question_load_firestore">Загрузить из Firestore?</string>
 </resources>

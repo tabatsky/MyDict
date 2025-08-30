@@ -1,5 +1,6 @@
 package jatx.mydict.ui.main
 
+import jatx.mydict.R
 import jatx.mydict.contracts.AuthScreen
 import jatx.mydict.contracts.DictScreen
 import jatx.mydict.domain.Language
@@ -18,7 +19,12 @@ class MainViewModel : BaseViewModel() {
 
     fun saveData() = backup.saveData()
 
-    fun loadDataFromFirestore() = backup.loadDataFromFirestore()
+    fun askForLoadDataFromFirestore() = dialogs
+        .showConfirmDialog(R.string.question_load_firestore) {
+            loadDataFromFirestore()
+        }
+
+    private fun loadDataFromFirestore() = backup.loadDataFromFirestore()
 
     fun saveDataToFirestore() = backup.saveDataToFirestore()
 }

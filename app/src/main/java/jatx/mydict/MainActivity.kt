@@ -341,7 +341,7 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
                         val user = auth.currentUser
                         Log.e("user", user?.uid.toString())
                         saveAuth(email, password)
-                        showToast(R.string.toast_sign_in_success)
+                        //showToast(R.string.toast_sign_in_success)
                         theUser = user
                     } else {
                         // If sign in fails, display a message to the user.
