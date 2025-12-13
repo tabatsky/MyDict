@@ -131,6 +131,7 @@ class TestingViewModel : BaseViewModel() {
 
     fun correctAnswer() {
         _currentQuestion.value?.questionWord?.let { word ->
+            speak(word.original, word.language, true)
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     word.correctAnswerCount += 1
@@ -142,6 +143,7 @@ class TestingViewModel : BaseViewModel() {
     }
 
     fun incorrectAnswer() {
+        mistake()
         _currentQuestion.value?.questionWord?.let { word ->
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
@@ -154,4 +156,6 @@ class TestingViewModel : BaseViewModel() {
 
     fun speak(text: String, language: Language, isForeign: Boolean) =
         speaker.speak(text, language, isForeign)
+
+    fun mistake() = mistaker.mistake()
 }

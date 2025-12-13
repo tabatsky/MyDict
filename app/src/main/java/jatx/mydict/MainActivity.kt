@@ -1,6 +1,8 @@
 package jatx.mydict
 
 import android.Manifest
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -37,7 +39,7 @@ import java.util.*
 import androidx.core.content.edit
 
 @OptIn(InternalSerializationApi::class)
-class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Auth, Speaker {
+class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Auth, Speaker, Mistaker {
 
     private lateinit var navController: NavController
 
@@ -70,6 +72,9 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
 
     private lateinit var tts: TextToSpeech
 
+    private var soundPool: SoundPool? = null
+    private var soundId: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -88,6 +93,16 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
         }
 
         tts = TextToSpeech(this) {}
+
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_GAME)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(5)
+            .setAudioAttributes(audioAttributes)
+            .build()
     }
 
     override fun onStart() {
@@ -391,4 +406,19 @@ class MainActivity : AppCompatActivity(), Navigator, Backup, Toasts, Dialogs, Au
         tts.language = locale
         tts.speak(actualText, TextToSpeech.QUEUE_FLUSH, null)
     }
+
+    override fun mistake() {
+        if (soundId == null) {
+            soundId = soundPool!!.load(this, R.raw.mistake, 1)
+            soundPool!!.setOnLoadCompleteListener { _, sampleId, status ->
+                if (status == 0) {
+                    soundPool!!.play(sampleId, 1f, 1f, 0, 0, 1f)
+                }
+            }
+        } else {
+            soundPool!!.play(soundId!!, 1f, 1f, 0, 0, 1f)
+        }
+    }
+
+
 }

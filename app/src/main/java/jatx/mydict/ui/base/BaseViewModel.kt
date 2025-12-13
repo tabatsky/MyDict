@@ -30,4 +30,7 @@ open class BaseViewModel: ViewModel() {
 
     val speaker: Speaker
         get() = activity as? Speaker ?: throw IllegalStateException()
+
+    val mistaker: Mistaker
+        get() = activity as? Mistaker ?: throw IllegalStateException()
 }
