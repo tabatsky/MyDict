@@ -67,4 +67,7 @@ data class Word(
         result = 31 * result + language.hashCode()
         return result
     }
+
+    val correctedOrderByValue: Float
+        get() = correctAnswerCount - 10.0f * (incorrectAnswerCount + 1) / (correctAnswerCount + 1)
 }

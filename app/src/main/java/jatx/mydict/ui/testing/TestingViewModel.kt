@@ -88,7 +88,7 @@ class TestingViewModel : BaseViewModel() {
             }
             .mapIndexed { sortIndex, wordIndex ->
                 val sortValue = wordList[wordIndex].let { word ->
-                    1000000 * word.orderByValue + sortIndex + rnd.nextInt(20) + rnd.nextDouble(1.0)
+                    10000 * word.correctedOrderByValue + sortIndex + rnd.nextInt(20) + rnd.nextDouble(1.0)
                 }
                 Triple(sortValue, sortIndex, wordIndex)
             }
