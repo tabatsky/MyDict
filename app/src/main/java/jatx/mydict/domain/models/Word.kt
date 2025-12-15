@@ -69,5 +69,5 @@ data class Word(
     }
 
     val correctedOrderByValue: Float
-        get() = correctAnswerCount - 10.0f * (incorrectAnswerCount + 1) / (correctAnswerCount + 1)
+        get() = correctAnswerCount - 1.0f * (incorrectAnswerCount + 1) / (correctAnswerCount + 1)
 }
